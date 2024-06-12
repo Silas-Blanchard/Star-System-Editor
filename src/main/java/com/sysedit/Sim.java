@@ -74,6 +74,9 @@ public class Sim {
 
     public void add_node(Node node){
         this.the_group.getChildren().add(node);
+        // ObservableList<Node> h = the_group.getChildren();
+        // System.out.println(title);
+        //System.out.println(system_parent.system.get_features());
     }
 
     public Group get_the_group(){
@@ -81,20 +84,21 @@ public class Sim {
     }
 
     public void set_new_parent(){
-        system_parent = new World();
-        World new_parent = new World();
-        new_parent.orbit.perigee = 0.0;
-        new_parent.orbit.apogee = 0.0;
-        new_parent.show_orbit = false;
-
         if (system_parent == null){
-            system_parent.parent = new_parent;
+            system_parent = new World();
+            system_parent.show_orbit = false;
+            system_parent.orbit.perigee = 0.0;
+            system_parent.orbit.apogee = 0.0;
+            system_parent.name = "Center";
         }
         else{
-            system_parent.parent = new_parent;
+            World new_parent = new World();
+            new_parent.orbit.perigee = 0.0;
+            new_parent.orbit.apogee = 0.0;
+            new_parent.show_orbit = false;
+            system_parent.set_parent(new_parent); 
             system_parent = new_parent;
         }
-        add_node(system_parent.render());
         updateScene();
     }
 
@@ -198,7 +202,8 @@ public class Sim {
         new_world.orbit.apogee = 100.0;
         new_world.radius = 10.0;
         new_world.show_orbit = true;
-        new_world.parent = host;
+        new_world.set_parent(host);
+        new_world.orbit.angle = new_world.angle;
         host.system.add_feature(new_world);
         updateScene();
     }

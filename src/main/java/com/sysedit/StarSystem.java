@@ -12,7 +12,7 @@ public class StarSystem {
 
     }
 
-    void add_feature(Feature new_feature){
+    public void add_feature(Feature new_feature){
         features.add(new_feature);
     }
 

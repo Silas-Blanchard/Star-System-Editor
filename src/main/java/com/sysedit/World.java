@@ -19,20 +19,26 @@ public class World extends Feature{
 
     @Override
     public Group render() {
-        //change generation so it asks orbit where it should be and sends its angle. 
+        //change generation so it asks orbit where it should be and sends its angle.
+        orbit.angle = this.angle;
+        Group g = new Group(orbit.render(), system.render());
+
         Ellipse ellipse = new Ellipse(radius, radius, radius, radius);
         ellipse.setFill(Color.WHITE);
+        ellipse.setStroke(Color.BLACK);
+        ellipse.setStrokeWidth(1.0);
 
         planet_right_click(ellipse);
-        x = ellipse.getCenterX();
-        y = ellipse.getCenterY();
+        ellipse.setCenterX(x);
+        ellipse.setCenterY(y);
 
-        Group g = new Group(ellipse, orbit.render(), system.render());
+        g.getChildren().add(ellipse);
 
         for (Feature f: system.get_features() ){
             g.getChildren().addAll(f.render());
         }
-
+        System.out.println(system.get_features());
+        System.out.println(this);
         return g;
     }
     

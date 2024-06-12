@@ -17,8 +17,8 @@ public abstract class Feature{
     public boolean show_orbit = true;
     public boolean show_name = true;
 
-    public double x;
-    public double y;
+    public double x = 0.0;
+    public double y = 0.0;
 
     private int shininess;
 
@@ -66,7 +66,10 @@ public abstract class Feature{
         });
     }
 
-
+    public void set_parent(Feature parent){
+        this.parent = parent;
+        this.orbit.parent = parent;
+    }
 
 
     abstract Group render(); //recursive!
