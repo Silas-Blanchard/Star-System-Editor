@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+
+
+<BorderPane prefHeight="370.0" prefWidth="498.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sysedit.MainEditorControl">
+   <top>
+      <MenuBar prefHeight="26.0" prefWidth="203.0" BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem fx:id="newButton" mnemonicParsing="false" onAction="#createNewSystem" text="New" />
+                  <MenuItem fx:id="saveButton" mnemonicParsing="false" onAction="#saveAs" text="Save As" />
+                  <MenuItem fx:id="closeButton" mnemonicParsing="false" onAction="#closeApp" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem fx:id="newParentButton" mnemonicParsing="false" onAction="#newParent" text="New System (Ctrl G)" />
+                  <MenuItem fx:id="selectAllButton" mnemonicParsing="false" onAction="#select_all" text="Select All (Ctrl A)" />
+                  <MenuItem fx:id="deselectButton" mnemonicParsing="false" onAction="#deselect_all" text="Deselect (Ctrl D)" />
+                  <MenuItem fx:id="undo_button" mnemonicParsing="false" onAction="#undo" text="Undo (Ctrl Z)" />
+                  <MenuItem fx:id="redo_button" mnemonicParsing="false" onAction="#redo" text="Redo (Ctrl Y)" />
+            </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="View">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Close" />
+               </items>
+            </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <center>
+      <ScrollPane fx:id="scroller" prefHeight="417.0" prefWidth="602.0" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>

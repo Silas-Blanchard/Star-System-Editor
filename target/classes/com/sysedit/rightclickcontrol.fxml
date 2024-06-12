@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.MenuItem?>
+
+<ContextMenu fx:id="contextMenu" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/20.0.1" fx:controller="com.sysedit.Rightclickcontrol">
+    <items>
+        <MenuItem onAction="#editDetails" text="Edit Details" />
+        <MenuItem onAction="#addSatellite" text="Add Satellite" />
+        <MenuItem onAction="#addRing" text="Add Ring" />
+        <MenuItem disable="t]rue" onAction="#addMega" text="Add Megastructure" />
+        <MenuItem onAction="#addRingSys" text="Add Ring System" />
+        <MenuItem onAction="#toggleOrbit" text="Toggle Orbit" />
+        <MenuItem onAction="#toggleSystem" text="Toggle System" />
+        <MenuItem onAction="#changeParent" text="Change Parent" />
+        <MenuItem onAction="#copy" text="Copy" />
+        <MenuItem onAction="#Paste" text="Paste" />
+        <MenuItem onAction="#copyAll" text="Copy Group" />
+        <MenuItem onAction="#delete" text="Delete" />
+    </items>
+</ContextMenu>
