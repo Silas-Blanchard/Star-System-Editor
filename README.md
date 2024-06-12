@@ -5,3 +5,5 @@ Originally inspired by discord user @theminmusderp, this project was meant to ex
 Downloadable JAR file coming soon (if you can trust a rando JAR file from online).
 
 Coded in Javafx for those who want to run the code themselves.
+
+Feel free to use! If you do, contact me at @Quattuordecillionaire on Discord or at silasb3435@gmail.com
