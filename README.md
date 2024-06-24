@@ -6,4 +6,4 @@ Downloadable JAR file coming soon (if you can trust a rando JAR file from online
 
 Coded in Javafx for those who want to run the code themselves.
 
-Feel free to use! If you do, contact me at @Quattuordecillionaire on Discord or at silasb3435@gmail.com
+Feel free to use! If you do, contact me at @quattuordecillionaire on Discord or at silasb3435@gmail.com (since it would be nice to see someone using it)
