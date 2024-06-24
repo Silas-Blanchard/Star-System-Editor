@@ -101,17 +101,18 @@ public class Orbit {
         planet_x = r * Math.cos(angle) + form.getLayoutX();
         planet_y = r * Math.sin(angle) + form.getLayoutY();
 
-        reference.setCoord(planet_x, planet_y);
+        reference.setCoord(planet_x, planet_y); //reference is moved relative to parent
 
         Circle point = new Circle();
-        point.setLayoutX(planet_x + form.getLayoutX());
-        point.setLayoutY(planet_y + form.getLayoutY());
+        point.setLayoutX(planet_x - form.getLayoutX()); //point is moved relative to the center of the group
+        point.setLayoutY(planet_y);
+
         point.setRadius(1);
         point.setFill(Color.WHITE);
 
         Circle outline = new Circle();
-        outline.setLayoutX(planet_x + form.getLayoutX());
-        outline.setLayoutY(planet_y + form.getLayoutY());
+        outline.setLayoutX(planet_x - form.getLayoutX());
+        outline.setLayoutY(planet_y);
         outline.setRadius(5);
         outline.setFill(Color.TRANSPARENT);
         outline.setStrokeWidth(1.0);
@@ -130,13 +131,9 @@ public class Orbit {
 
         Ellipse orbit = new Ellipse(0, 0, semimajor, semiminor);
 
-        System.out.println("Major: " + semimajor + " minor " + semiminor);
-
-        //this bit is for putting the parent in the focus of the ellipse
-        // Double x = orbit.getCenterX();
-
         orbit.getTransforms().add(rotateTransform);
 
+        //this bit is for putting the parent in the focus of the ellipse
         Double focalLength = Math.sqrt(semimajor * semimajor - semiminor * semiminor);
         form.setLayoutX(focalLength);
 

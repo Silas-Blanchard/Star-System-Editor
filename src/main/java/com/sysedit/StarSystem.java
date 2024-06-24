@@ -61,4 +61,9 @@ public class StarSystem {
             newParent.system.subgroup.getChildren().add(n);
         }
     }
+
+    public void addRendering(Feature f){
+        objects.add(f.form);
+        subgroup.getChildren().add(f.form);
+    }
 }

@@ -68,7 +68,7 @@ public abstract class Feature{
                 controller.set_reference(this);
 
                 if(this.is_expanded){
-                    controller.enableSat();
+                    controller.enableAddingSatellites();
                 }
                 if (contextmenu.isShowing()) {
                     contextmenu.hide();

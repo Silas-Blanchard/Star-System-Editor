@@ -77,6 +77,7 @@ public class Rightclickcontrol {
     @FXML
     void toggleSystem(ActionEvent event) {
         reference.is_expanded = !reference.is_expanded;
+        reference.form.getChildren().clear();
         sim.updateScene();
     }
 
@@ -84,7 +85,7 @@ public class Rightclickcontrol {
         this.reference = f;
     }
 
-    public void enableSat(){
+    public void enableAddingSatellites(){
         addSatButton.setDisable(false);
     }
 
