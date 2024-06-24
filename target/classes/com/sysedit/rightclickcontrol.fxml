@@ -5,8 +5,8 @@
 
 <ContextMenu fx:id="contextMenu" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/20.0.1" fx:controller="com.sysedit.Rightclickcontrol">
     <items>
-        <MenuItem onAction="#editDetails" text="Edit Details" />
-        <MenuItem onAction="#addSatellite" text="Add Satellite" />
+        <MenuItem onAction="#editDetails" text="Edit Details"/>
+        <MenuItem onAction="#addSatellite" text="Add Satellite" fx:id="addSatButton" disable="true"/>
         <MenuItem onAction="#addRing" text="Add Ring" />
         <MenuItem disable="t]rue" onAction="#addMega" text="Add Megastructure" />
         <MenuItem onAction="#addRingSys" text="Add Ring System" />

@@ -3,6 +3,8 @@ package com.sysedit;
 import java.io.IOException;
 
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.control.ContextMenu;
@@ -11,35 +13,54 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
 
 public class World extends Feature{
+    public Ellipse planet = new Ellipse();
+    public Positioner pos;
 
     World(){
-        orbit = new Orbit(this);
         system = new StarSystem();
+        orbit = new Orbit(this);
+        form.getChildren().add(planet);
+        system.setup_rendering(form);
     }
 
-    @Override
-    public Group render() {
+    @Override //will pass around a group recursively of all the non-draggable elements such as orbits
+    public void render() {
+
         //change generation so it asks orbit where it should be and sends its angle.
         orbit.angle = this.angle;
-        Group g = new Group(orbit.render(), system.render());
 
-        Ellipse ellipse = new Ellipse(radius, radius, radius, radius);
-        ellipse.setFill(Color.WHITE);
-        ellipse.setStroke(Color.BLACK);
-        ellipse.setStrokeWidth(1.0);
+        orbit.render();
+        system.render();
 
-        planet_right_click(ellipse);
-        ellipse.setCenterX(x);
-        ellipse.setCenterY(y);
+        objectivePoint = new Point2D(x, y);
+        
+        // planet.setLayoutX(x);
+        // planet.setLayoutY(y);
 
-        g.getChildren().add(ellipse);
+        planet_right_click(planet); //imbues it with being right clickable
 
-        for (Feature f: system.get_features() ){
-            g.getChildren().addAll(f.render());
+        if(parent == null){
+            pos = new Positioner(planet, this, true);
+        } else{
+            Point2D objective = parent.getObjectivePoint();
+            form.setLayoutX(x + objective.getX());
+            form.setLayoutY(y + objective.getY());
         }
-        System.out.println(system.get_features());
-        System.out.println(this);
-        return g;
+
+        planet.setRadiusX(radius);
+        planet.setRadiusY(radius);
+
+        planet.setFill(Color.WHITE);
+        planet.setStroke(Color.BLACK);
+        planet.setStrokeWidth(1.0);
     }
-    
+
+    public void setCoord(double xPos, double yPos){
+        this.x = xPos;
+        this.y = yPos;
+
+        form.setLayoutX(xPos);
+        form.setLayoutY(yPos);
+    }
+
 }

@@ -5,6 +5,7 @@ import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 
 public class Rightclickcontrol {
     //this is the right click controller. Wow shocking
@@ -13,6 +14,9 @@ public class Rightclickcontrol {
 
     @FXML
     private ContextMenu contextMenu;
+
+    @FXML
+    private MenuItem addSatButton;
 
     @FXML
     void Paste(ActionEvent event) {
@@ -78,6 +82,10 @@ public class Rightclickcontrol {
 
     public void set_reference(Feature f){
         this.reference = f;
+    }
+
+    public void enableSat(){
+        addSatButton.setDisable(false);
     }
 
 }

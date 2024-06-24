@@ -3,6 +3,7 @@ package com.sysedit;
 import java.io.IOException;
 
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
@@ -13,7 +14,7 @@ public abstract class Feature{
     public Orbit orbit;
     public StarSystem system;
 
-    public boolean is_expanded = true;
+    public boolean is_expanded = false;
     public boolean show_orbit = true;
     public boolean show_name = true;
 
@@ -33,6 +34,13 @@ public abstract class Feature{
     private ContextMenu contextmenu;
     private Rightclickcontrol controller;
 
+    public Group form = new Group(); //this is the form the feature takes.
+
+    public Double layoutX;
+    public Double layoutY;
+
+    public Point2D objectivePoint;
+
     Sim sim = Sim.getSim();
 
     public Feature(){
@@ -46,6 +54,7 @@ public abstract class Feature{
     } 
 
     public void planet_right_click(Node ellipse){
+        //opens menu upon right click
         ellipse.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.SECONDARY && event.isShiftDown()) {
                 try {
@@ -57,7 +66,10 @@ public abstract class Feature{
             }
             if (event.getButton() == MouseButton.SECONDARY) {    
                 controller.set_reference(this);
-                System.out.println(controller);
+
+                if(this.is_expanded){
+                    controller.enableSat();
+                }
                 if (contextmenu.isShowing()) {
                     contextmenu.hide();
                 }
@@ -68,9 +80,35 @@ public abstract class Feature{
 
     public void set_parent(Feature parent){
         this.parent = parent;
-        this.orbit.parent = parent;
+        this.orbit.set_parent(parent);
+        this.system.set_parent(parent);
+
+        this.x = parent.x;
+        this.y = parent.y;
     }
 
+    public void set_relative_pos(double x, double y){
+        layoutX = x;
+        layoutY = y;
+    }
 
-    abstract Group render(); //recursive!
+    public Point2D getObjectivePoint(){
+        return form.localToParent(0,0);
+    }
+
+    public void setObjectivePoint(Point2D p){
+        objectivePoint = p;
+        this.x = p.getX();
+        this.y = p.getY();
+    }
+
+    public void transLocal(Group g){ //handles translation nice and easy
+        // Point2D p = g.sceneToLocal(objectivePoint);
+        // g.setTranslateX(p.getX());
+        // g.setTranslateY(p.getY());
+        g.setTranslateX(objectivePoint.getX());
+        g.setTranslateY(objectivePoint.getY());
+    }
+
+    abstract void render(); //recursive! Updates the form of all features in the system
 }

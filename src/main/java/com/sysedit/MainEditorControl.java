@@ -11,6 +11,12 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
 public class MainEditorControl {
@@ -18,6 +24,9 @@ public class MainEditorControl {
 
     @FXML
     private ScrollPane scroller;
+
+    @FXML
+    private StackPane stacker;
 
     @FXML
     private MenuItem newButton;
@@ -97,12 +106,16 @@ public class MainEditorControl {
         scroller.setFitToHeight(true);
 
         Sim sim = Sim.getSim();
-        Group group = sim.get_the_group();
+        Group the_group = sim.get_the_group();
+        Group special_group = sim.get_special_group();
+        Pane mainpane = new Pane(the_group, special_group);
 
         StackPane stacky = new StackPane();
-        stacky.getChildren().addAll(imageView, group);
+        stacky.getChildren().addAll(imageView, mainpane);
 
         scroller.setContent(stacky);
-    }
 
+        sim.pane_center_x = largeImage.getWidth() / 2;
+        sim.pane_center_y = largeImage.getHeight() / 2;
+    }
 }

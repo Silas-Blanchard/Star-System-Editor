@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
-import java.awt.ScrollPane;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 
@@ -20,6 +19,7 @@ import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.PixelFormat;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
@@ -27,6 +27,7 @@ import javafx.scene.image.WritablePixelFormat;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -39,14 +40,15 @@ public class Sim {
     private ArrayList<Node> todo_list;
     private Group selection;
     private Group the_group = new Group(); //Note to self all shapes stored in this one. 
+    private Group special_group = new Group(); //except for draggable elements (:
+
     private Group copied;
     private World system_parent;
     private String title = "untitled";
     private javafx.scene.control.ScrollPane pane_thats_saved;
 
-    private Sim(){
-        todo_list = new ArrayList<Node>();
-    }
+    public Double pane_center_x;
+    public Double pane_center_y;
 
     public static Sim getSim(){
         if (the_only_sim == null){
@@ -79,17 +81,27 @@ public class Sim {
         //System.out.println(system_parent.system.get_features());
     }
 
+    public void remove_node(Node node){
+        this.the_group.getChildren().remove(node);
+    }
+
     public Group get_the_group(){
         return the_group;
+    }
+
+    public Group get_special_group(){
+        return special_group;
     }
 
     public void set_new_parent(){
         if (system_parent == null){
             system_parent = new World();
             system_parent.show_orbit = false;
+            system_parent.is_expanded = true;
             system_parent.orbit.perigee = 0.0;
             system_parent.orbit.apogee = 0.0;
             system_parent.name = "Center";
+            system_parent.setCoord(pane_center_x, pane_center_y);
         }
         else{
             World new_parent = new World();
@@ -98,12 +110,18 @@ public class Sim {
             new_parent.show_orbit = false;
             system_parent.set_parent(new_parent); 
             system_parent = new_parent;
+            system_parent.name = "Center";
+            system_parent.setCoord(pane_center_x, pane_center_y);
         }
         updateScene();
     }
 
     public void set_scrollpane(ScrollPane pane){
-        
+        this.pane_thats_saved = pane;
+    }
+
+    public ScrollPane get_scrollpane(){
+        return this.pane_thats_saved;
     }
 
     public void saveAs(){
@@ -161,10 +179,6 @@ public class Sim {
         title = t;
     }
 
-    public void set_scrollpane(javafx.scene.control.ScrollPane scrollPane) {
-        this.pane_thats_saved = scrollPane;
-    }
-
     public void open_editor(Feature feature, Boolean isError) throws IOException{
         Stage edit_window = new Stage();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("editor.fxml"));
@@ -192,8 +206,14 @@ public class Sim {
     }
 
     public void updateScene(){
-        the_group.getChildren().clear();
-        add_node(system_parent.render());
+        system_parent.render(); //recursive so it will render everything (
+        // Circle centerMark = new Circle(0.0, 0.0, 1.0);
+        // centerMark.setFill(Color.RED);
+        // add_node(centerMark);
+        the_group.setLayoutY(0);
+        the_group.setLayoutX(0);
+        special_group.setLayoutY(0);
+        special_group.setLayoutX(0);
     }
 
     public void create_satellite(Feature host){
@@ -202,9 +222,13 @@ public class Sim {
         new_world.orbit.apogee = 100.0;
         new_world.radius = 10.0;
         new_world.show_orbit = true;
+        new_world.is_expanded = false;
         new_world.set_parent(host);
         new_world.orbit.angle = new_world.angle;
         host.system.add_feature(new_world);
-        updateScene();
+
+        System.out.println("X: " + host.x + " Y: " + host.y);
+
+        new_world.render();
     }
 }

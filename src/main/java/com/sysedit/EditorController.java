@@ -73,13 +73,13 @@ public class EditorController {
             reference. perigee = perigee;
             reference.radius = radius;
             reference.inclination = inclination;
-            sim.updateScene();
         } catch (Exception e){
             sim.open_editor(reference, true);
         } finally{
             Stage stage = (Stage) cancel.getScene().getWindow();
             stage.close();
         }
+        sim.updateScene();
     }
 
     public void set_values(Feature f){ //sets values for the editor menu
