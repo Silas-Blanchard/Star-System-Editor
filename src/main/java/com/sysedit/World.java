@@ -50,8 +50,6 @@ public class World extends Feature{
                 system.addRendering(this);
             }
 
-            objectivePoint = new Point2D(x, y);
-
             pos = new Positioner(planet, this, true);
 
         } else {
@@ -74,11 +72,22 @@ public class World extends Feature{
         planet.setStrokeWidth(1.0);
     }
 
-    public void setCoord(double xPos, double yPos){
-        this.x = xPos;
-        this.y = yPos;
+    @Override
+    public void setObjectivePoint(Point2D p) {
+        objectivePoint = p;
+        form.setLayoutX(p.getX());
+        form.setLayoutY(p.getY());
+    }
 
-        form.setLayoutX(xPos);
-        form.setLayoutY(yPos);
+    @Override
+    public void setShapeOffset(Point2D p) {
+        planet.setLayoutX(p.getX());
+        planet.setLayoutY(p.getY());
+        this.shapeOffset = p;
+    }
+
+    @Override
+    public void deltaObjPoint(Point2D p){
+        objectivePoint = new Point2D(p.getX() + objectivePoint.getX(), p.getY() + objectivePoint.getY());
     }
 }

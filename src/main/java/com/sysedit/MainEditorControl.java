@@ -116,7 +116,6 @@ public class MainEditorControl {
 
         scroller.setContent(stacky);
 
-        sim.pane_center_x = largeImage.getWidth() / 2;
-        sim.pane_center_y = largeImage.getHeight() / 2;
+        sim.startPoint = new Point2D(largeImage.getWidth() / 2, largeImage.getHeight() / 2);
     }
 }

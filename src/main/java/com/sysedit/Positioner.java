@@ -64,10 +64,10 @@ public class Positioner {
                 reference.system.subgroup.setLayoutX(prevX + deltaX);
                 reference.system.subgroup.setLayoutY(prevY + deltaY);
 
-                reference.x = prevX + deltaX;
-                reference.y = prevY + deltaY;
+                // reference.x = prevX + deltaX;
+                // reference.y = prevY + deltaY;
 
-                reference.objectivePoint = reference.form.localToParent(new Point2D(reference.x, reference.y));
+                // reference.objectivePoint = reference.form.localToParent(new Point2D(reference.x, reference.y));
 
                 // Point2D handleScenePosition = handle.localToParent(0, 0); //this is the handles local position+
                 // reference.setObjectivePoint(handleScenePosition);
@@ -78,6 +78,11 @@ public class Positioner {
                 // System.out.println("Ref X: " + reference.x+" Ref Y: " + reference.y);
                 // System.out.println("Prev X: " + prevX +" Prev Y: " + prevY);
 
+                e.consume();
+            });
+
+            handle.setOnMouseDragReleased(e ->{
+                reference.deltaObjPoint(new Point2D(prevX + deltaY, prevY + deltaX));
                 e.consume();
             });
         }

@@ -13,6 +13,7 @@ import java.awt.image.RenderedImage;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -47,8 +48,7 @@ public class Sim {
     private String title = "untitled";
     private javafx.scene.control.ScrollPane pane_thats_saved;
 
-    public Double pane_center_x;
-    public Double pane_center_y;
+    public Point2D startPoint;
 
     public static Sim getSim(){
         if (the_only_sim == null){
@@ -101,17 +101,17 @@ public class Sim {
             system_parent.orbit.perigee = 0.0;
             system_parent.orbit.apogee = 0.0;
             system_parent.name = "Center";
-            system_parent.setCoord(pane_center_x, pane_center_y);
+            system_parent.setObjectivePoint(startPoint);
         }
         else{
             World new_parent = new World();
             new_parent.orbit.perigee = 0.0;
             new_parent.orbit.apogee = 0.0;
             new_parent.show_orbit = false;
-            system_parent.setParent(new_parent); 
+            system_parent.setParent(new_parent);
             system_parent = new_parent;
             system_parent.name = "Center";
-            system_parent.setCoord(pane_center_x, pane_center_y);
+            system_parent.setObjectivePoint(startPoint);
         }
         updateScene();
     }
@@ -226,7 +226,6 @@ public class Sim {
         new_world.setParent(host);
         new_world.orbit.angle = new_world.angle;
         host.system.add_feature(new_world);
-        System.out.println(this.system_parent);
 
         new_world.render();
     }

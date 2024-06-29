@@ -67,9 +67,9 @@ public class Orbit {
             // form.setLayoutY(parent.getTrueY());
         }
         if(parent != null && parent.getObjectivePoint() != null){
-            // System.out.println(parent.x + " " + parent.y);
-            parent.centerOrbit(form);
-            // System.out.println("orbit x " + form.getLayoutX() + " " + form.getLayoutY());
+            Point2D h = parent.getObjectivePoint();
+            form.setLayoutX(h.getX());
+            form.setLayoutY(h.getY());
         }
     }
 
@@ -102,11 +102,10 @@ public class Orbit {
         Double r = semiminor / Math.sqrt(1 - (eccentricity * Math.cos(angle)) * (eccentricity * Math.cos(angle)));
         //r is the distance to the point! Now! To convert it to a solid number of pixels!
         
-        //this equation is relative to the center of the orbit! I used to assume the parent was always the center!
-        planet_x = r * Math.cos(angle) + form.getLayoutX();
-        planet_y = r * Math.sin(angle) + form.getLayoutY();
+        planet_x = r * Math.cos(angle);
+        planet_y = r * Math.sin(angle);
 
-        reference.setCoord(planet_x, planet_y); //reference is moved relative to parent
+        reference.setShapeOffset(new Point2D(planet_x, planet_y));
 
         Circle point = new Circle();
         point.setLayoutX(planet_x - form.getLayoutX()); //point is moved relative to the center of the group

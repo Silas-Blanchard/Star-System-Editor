@@ -1,5 +1,6 @@
 package com.sysedit;
 
+import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
@@ -14,5 +15,21 @@ public class RingSys extends Feature{
 
         Group g = Sim.getSim().get_the_group();
         g.getChildren().addAll(the_ring);
+    }
+
+        @Override
+    public void setObjectivePoint(Point2D p) {
+        objectivePoint = p;
+        form.setLayoutX(p.getX());
+        form.setLayoutY(p.getY());
+    }
+
+    @Override
+    public void setShapeOffset(Point2D p) {
+
+    }
+
+    public void deltaObjPoint(Point2D p){
+        objectivePoint = new Point2D(p.getX() + objectivePoint.getX(), p.getY() + objectivePoint.getY());
     }
 }

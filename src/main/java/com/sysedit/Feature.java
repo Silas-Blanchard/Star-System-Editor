@@ -7,6 +7,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.effect.Light.Point;
 import javafx.scene.input.MouseButton;
 
 public abstract class Feature{
@@ -17,9 +18,6 @@ public abstract class Feature{
     public boolean is_expanded = false;
     public boolean show_orbit = true;
     public boolean show_name = true;
-
-    public double x = 0.0;
-    public double y = 0.0;
 
     private int shininess;
 
@@ -36,8 +34,7 @@ public abstract class Feature{
 
     public Group form = new Group(); //this is the form the feature takes.
 
-    public Double layoutX;
-    public Double layoutY;
+    public Point2D shapeOffset;
 
     public Point2D objectivePoint;
 
@@ -83,38 +80,22 @@ public abstract class Feature{
         this.orbit.set_parent(parent);
         this.system.set_parent(parent);
 
-        this.x = parent.x;
-        this.y = parent.y;
+        setObjectivePoint(parent.getObjectivePoint());
     }
 
-    public void set_relative_pos(double x, double y){
-        layoutX = x;
-        layoutY = y;
+    public Point2D getShapeOffset(){
+        return shapeOffset;
     }
+
+    public abstract void setShapeOffset(Point2D p);
 
     public Point2D getObjectivePoint(){
-        Point2D h = form.localToScene(0,0);
-        System.out.println(h);
-        return h;
+        return objectivePoint;
     }
 
-    public void setObjectivePoint(Point2D p){
-        objectivePoint = p;
-        this.x = p.getX();
-        this.y = p.getY();
-        form.setLayoutX(x);
-        form.setLayoutY(y);
-    }
+    abstract public void setObjectivePoint(Point2D p);
 
-    public void centerOrbit(Group g){ //handles translation nice and easy
-        // Point2D p = g.sceneToLocal(objectivePoint);
-        // g.setTranslateX(p.getX());
-        // g.setTranslateY(p.getY());
-        g.setLayoutX(objectivePoint.getX());
-        g.setLayoutY(objectivePoint.getY());
-        // System.out.println(objectivePoint.getX() + " " + objectivePoint.getY());
-        // System.out.println(x + " " + y);
-    }
+    abstract public void deltaObjPoint(Point2D p);
 
     abstract void render(); //recursive! Updates the form of all features in the system
 }
