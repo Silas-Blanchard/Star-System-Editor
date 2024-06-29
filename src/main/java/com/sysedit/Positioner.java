@@ -67,6 +67,8 @@ public class Positioner {
                 reference.x = prevX + deltaX;
                 reference.y = prevY + deltaY;
 
+                reference.objectivePoint = reference.form.localToParent(new Point2D(reference.x, reference.y));
+
                 // Point2D handleScenePosition = handle.localToParent(0, 0); //this is the handles local position+
                 // reference.setObjectivePoint(handleScenePosition);
 

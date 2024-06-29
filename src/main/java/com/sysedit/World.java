@@ -20,12 +20,15 @@ public class World extends Feature{
     World(){
         system = new StarSystem();
         orbit = new Orbit(this);
-        form.getChildren().add(planet);
         system.setup_rendering(form);
     }
 
     @Override //will pass around a group recursively of all the non-draggable elements such as orbits
     public void render() {
+        //setObjectivePoint(getObjectivePoint());
+        if(form.getChildren().size() == 0){
+            form.getChildren().add(planet);
+        }
 
         if(is_expanded){
 
@@ -40,16 +43,11 @@ public class World extends Feature{
                 // form.setTranslateX(newX);
                 // form.setTranslateY(newY);
 
-                form.getChildren().add(planet);
-
                 Point2D objective = parent.getObjectivePoint();
-                form.setLayoutX(x + objective.getX());
-                form.setLayoutY(y + objective.getY());
+                setObjectivePoint(objective);
 
                 parent.system.remove_rendering(form);
                 system.addRendering(this);
-
-                System.out.println("form x " + form.getLayoutX() + " form y " + form.getLayoutY());
             }
 
             objectivePoint = new Point2D(x, y);
@@ -62,14 +60,8 @@ public class World extends Feature{
 
             orbit.render();
 
-            objectivePoint = new Point2D(x, y);
-            
-            // planet.setLayoutX(x);
-            // planet.setLayoutY(y);
-
             Point2D objective = parent.getObjectivePoint();
-            form.setLayoutX(x + objective.getX());
-            form.setLayoutY(y + objective.getY());
+            setObjectivePoint(objective);
         }
 
         planet_right_click(planet); //imbues it with being right clickable
@@ -89,5 +81,4 @@ public class World extends Feature{
         form.setLayoutX(xPos);
         form.setLayoutY(yPos);
     }
-
 }

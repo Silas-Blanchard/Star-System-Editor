@@ -78,7 +78,7 @@ public abstract class Feature{
         });
     }
 
-    public void set_parent(Feature parent){
+    public void setParent(Feature parent){
         this.parent = parent;
         this.orbit.set_parent(parent);
         this.system.set_parent(parent);
@@ -93,21 +93,27 @@ public abstract class Feature{
     }
 
     public Point2D getObjectivePoint(){
-        return form.localToParent(0,0);
+        Point2D h = form.localToScene(0,0);
+        System.out.println(h);
+        return h;
     }
 
     public void setObjectivePoint(Point2D p){
         objectivePoint = p;
         this.x = p.getX();
         this.y = p.getY();
+        form.setLayoutX(x);
+        form.setLayoutY(y);
     }
 
-    public void transLocal(Group g){ //handles translation nice and easy
+    public void centerOrbit(Group g){ //handles translation nice and easy
         // Point2D p = g.sceneToLocal(objectivePoint);
         // g.setTranslateX(p.getX());
         // g.setTranslateY(p.getY());
-        g.setTranslateX(objectivePoint.getX());
-        g.setTranslateY(objectivePoint.getY());
+        g.setLayoutX(objectivePoint.getX());
+        g.setLayoutY(objectivePoint.getY());
+        // System.out.println(objectivePoint.getX() + " " + objectivePoint.getY());
+        // System.out.println(x + " " + y);
     }
 
     abstract void render(); //recursive! Updates the form of all features in the system

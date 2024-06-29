@@ -62,9 +62,14 @@ public class Orbit {
 
             orbit_ellipse = i;
             form.getChildren().add(orbit_ellipse);
+
+            // form.setLayoutX(parent.getTrueX());
+            // form.setLayoutY(parent.getTrueY());
         }
         if(parent != null && parent.getObjectivePoint() != null){
-            parent.transLocal(form);
+            // System.out.println(parent.x + " " + parent.y);
+            parent.centerOrbit(form);
+            // System.out.println("orbit x " + form.getLayoutX() + " " + form.getLayoutY());
         }
     }
 

@@ -108,7 +108,7 @@ public class Sim {
             new_parent.orbit.perigee = 0.0;
             new_parent.orbit.apogee = 0.0;
             new_parent.show_orbit = false;
-            system_parent.set_parent(new_parent); 
+            system_parent.setParent(new_parent); 
             system_parent = new_parent;
             system_parent.name = "Center";
             system_parent.setCoord(pane_center_x, pane_center_y);
@@ -223,11 +223,10 @@ public class Sim {
         new_world.radius = 10.0;
         new_world.show_orbit = true;
         new_world.is_expanded = false;
-        new_world.set_parent(host);
+        new_world.setParent(host);
         new_world.orbit.angle = new_world.angle;
         host.system.add_feature(new_world);
-
-        System.out.println("X: " + host.x + " Y: " + host.y);
+        System.out.println(this.system_parent);
 
         new_world.render();
     }
