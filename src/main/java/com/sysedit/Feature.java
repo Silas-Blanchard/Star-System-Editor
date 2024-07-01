@@ -78,6 +78,7 @@ public abstract class Feature{
     public void setParent(Feature parent){
         this.parent = parent;
         this.orbit.set_parent(parent);
+        this.orbit.angle = this.angle;
         this.system.set_parent(parent);
 
         setObjectivePoint(parent.getObjectivePoint());
@@ -92,6 +93,8 @@ public abstract class Feature{
     public Point2D getObjectivePoint(){
         return objectivePoint;
     }
+
+    abstract public void imbuePositioning();
 
     abstract void liberate(); //frees a given object from its parent. Simple as
 

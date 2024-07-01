@@ -38,4 +38,10 @@ public class RingSys extends Feature{
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'liberate'");
     }
+
+    @Override
+    public void imbuePositioning() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'imbuePositioning'");
+    }
 }

@@ -43,6 +43,7 @@ public class World extends Feature{
 
             Point2D objective = parent.getObjectivePoint();
             setObjectivePoint(objective);
+            System.out.println(parent.getObjectivePoint());
         }
 
         planet_right_click(planet); //imbues it with being right clickable
@@ -53,6 +54,17 @@ public class World extends Feature{
         planet.setFill(Color.WHITE);
         planet.setStroke(Color.BLACK);
         planet.setStrokeWidth(1.0);
+    }
+
+    public void returnToZero(){
+        //this just makes the current planet offset + objective point be the new objective point
+        setObjectivePoint(new Point2D(shapeOffset.getX() + objectivePoint.getX(), shapeOffset.getY() + objectivePoint.getY()));
+        setShapeOffset(new Point2D(0, 0));
+    }
+
+    @Override
+    public void imbuePositioning(){
+        Positioner pos = new Positioner(planet, this, true);
     }
 
     @Override
@@ -90,6 +102,7 @@ public class World extends Feature{
             system.addRendering(this);
         }
 
-        pos = new Positioner(planet, this, true);
+        imbuePositioning();
+        returnToZero();
     }
 }
