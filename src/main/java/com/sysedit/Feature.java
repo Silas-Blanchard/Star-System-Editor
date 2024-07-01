@@ -93,6 +93,8 @@ public abstract class Feature{
         return objectivePoint;
     }
 
+    abstract void liberate(); //frees a given object from its parent. Simple as
+
     abstract public void setObjectivePoint(Point2D p);
 
     abstract public void deltaObjPoint(Point2D p);

@@ -77,8 +77,11 @@ public class Rightclickcontrol {
     @FXML
     void toggleSystem(ActionEvent event) {
         reference.is_expanded = !reference.is_expanded;
-        reference.form.getChildren().clear();
-        sim.updateScene();
+        // reference.form.getChildren().clear();
+        // sim.updateScene();
+        if(reference.is_expanded){
+            reference.liberate();
+        }
     }
 
     public void set_reference(Feature f){

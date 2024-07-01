@@ -47,8 +47,9 @@ public class StarSystem {
         subgroup.getChildren().add(subsubgroup);
     }
 
-    public void remove_rendering(Group group_to_remove){
-        objects.remove(group_to_remove);
+    public void remove_rendering(Feature f){
+        objects.remove(f.form);
+        features.remove(f);
     }
 
     public void remove_system(){

@@ -35,23 +35,6 @@ public class World extends Feature{
             orbit.render();
             system.render();
 
-            if(parent != null){
-                // Bounds b = parent.form.getLayoutBounds();
-                // double newX = b.getWidth();
-                // double newY = b.getHeight();
-    
-                // form.setTranslateX(newX);
-                // form.setTranslateY(newY);
-
-                Point2D objective = parent.getObjectivePoint();
-                setObjectivePoint(objective);
-
-                parent.system.remove_rendering(form);
-                system.addRendering(this);
-            }
-
-            pos = new Positioner(planet, this, true);
-
         } else {
             //change generation so it asks orbit where it should be and sends its angle.
             orbit.angle = this.angle;
@@ -89,5 +72,24 @@ public class World extends Feature{
     @Override
     public void deltaObjPoint(Point2D p){
         objectivePoint = new Point2D(p.getX() + objectivePoint.getX(), p.getY() + objectivePoint.getY());
+    }
+
+    @Override
+    public void liberate(){
+        //this will make the world its own system. That simple.
+        //this.orbit STAYS with the parent's group
+        if(this.system.equals(parent.system)){
+            this.system = new StarSystem();
+            parent.system.remove_rendering(this);
+        }
+
+        if(parent != null){
+            Point2D objective = parent.getObjectivePoint();
+            setObjectivePoint(objective);
+
+            system.addRendering(this);
+        }
+
+        pos = new Positioner(planet, this, true);
     }
 }

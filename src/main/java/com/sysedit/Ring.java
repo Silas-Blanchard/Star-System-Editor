@@ -35,5 +35,11 @@ public class Ring extends Feature{
         public void deltaObjPoint(Point2D p){
             objectivePoint = new Point2D(p.getX() + objectivePoint.getX(), p.getY() + objectivePoint.getY());
         }
+
+        @Override
+        void liberate() {
+            // TODO Auto-generated method stub
+            throw new UnsupportedOperationException("Unimplemented method 'liberate'");
+        }
     
 }
