@@ -1,26 +1,19 @@
 package com.sysedit;
 
-import java.io.IOException;
-
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
-import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.Parent;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
 
 public class World extends Feature{
     public Ellipse planet = new Ellipse();
-    public Positioner pos;
+    public PlanetPositioner pos;
+    public Connector connecta;
 
     World(){
         system = new StarSystem();
         orbit = new Orbit(this);
         system.setup_rendering(form);
+        connecta = new Connector(this);
     }
 
     @Override //will pass around a group recursively of all the non-draggable elements such as orbits
@@ -34,6 +27,7 @@ public class World extends Feature{
 
             orbit.render();
             system.render();
+            connecta.render();
 
         } else {
             //change generation so it asks orbit where it should be and sends its angle.
@@ -64,7 +58,7 @@ public class World extends Feature{
 
     @Override
     public void imbuePositioning(){
-        Positioner pos = new Positioner(planet, this, true);
+        PlanetPositioner pos = new PlanetPositioner(planet, this, true);
     }
 
     @Override
@@ -102,6 +96,7 @@ public class World extends Feature{
             system.addRendering(this);
         }
 
+        connecta.setVisible(true);
         imbuePositioning();
         returnToZero();
     }

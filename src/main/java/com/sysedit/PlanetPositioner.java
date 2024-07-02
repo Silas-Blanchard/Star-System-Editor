@@ -4,7 +4,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.shape.Ellipse;
 
 
-public class Positioner {
+public class PlanetPositioner {
 
     private double deltaX;
     private double deltaY;
@@ -16,11 +16,11 @@ public class Positioner {
     double prevX;
     double prevY;
 
-    public Positioner (Ellipse handle, Feature reference){
+    public PlanetPositioner (Ellipse handle, World reference){
         this(handle, reference, false);
     }
 
-    public Positioner (Ellipse ell, Feature reference, Boolean isDraggable){
+    public PlanetPositioner (Ellipse ell, World reference, Boolean isDraggable){
         this.handle = ell;
 
 
@@ -39,6 +39,8 @@ public class Positioner {
 
                 reference.system.subgroup.setLayoutX(prevX + deltaX);
                 reference.system.subgroup.setLayoutY(prevY + deltaY);
+
+                reference.connecta.render();
 
                 e.consume();
             });
