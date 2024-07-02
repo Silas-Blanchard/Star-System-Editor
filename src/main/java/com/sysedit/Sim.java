@@ -30,6 +30,8 @@ public class Sim {
 
     public Point2D startPoint;
 
+    public ArrayList<Connector> connectors = new ArrayList<Connector>();
+
     public static Sim getSim(){
         if (the_only_sim == null){
             the_only_sim = new Sim();
@@ -163,5 +165,9 @@ public class Sim {
         new_world.setParent(host);
 
         new_world.render();
+    }
+
+    public void addNewConnector(Connector c){
+        connectors.add(c);
     }
 }

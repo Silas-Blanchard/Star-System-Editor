@@ -34,9 +34,11 @@ public abstract class Feature{
 
     public Group form = new Group(); //this is the form the feature takes.
 
-    public Point2D shapeOffset;
+    public Point2D shapeOffset = new Point2D(0, 0);
 
     public Point2D objectivePoint;
+
+    public Connector connectorIn;
 
     Sim sim = Sim.getSim();
 
@@ -48,7 +50,12 @@ public abstract class Feature{
         } catch (IOException ex){
 
         }
-    } 
+    }
+
+    public Point2D getShapeLoc(){
+        return form.localToParent(shapeOffset);
+    }
+
 
     public void planet_right_click(Node ellipse){
         //opens menu upon right click
@@ -80,6 +87,8 @@ public abstract class Feature{
         this.orbit.set_parent(parent);
         this.orbit.angle = this.angle;
         this.system.set_parent(parent);
+
+        parent.system.add_feature(this);
 
         setObjectivePoint(parent.getObjectivePoint());
     }

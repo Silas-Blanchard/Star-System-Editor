@@ -11,7 +11,7 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.shape.Shape;
 
 public class StarSystem {
-    private ArrayList<Feature> features = new ArrayList<>();
+    public ArrayList<Feature> features = new ArrayList<>();
     public Group subgroup = new Group();
     private Feature parent;
     public ArrayList<Node> objects;

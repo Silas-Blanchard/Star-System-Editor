@@ -1,5 +1,7 @@
 package com.sysedit;
 
+import java.util.ArrayList;
+
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
@@ -7,13 +9,12 @@ import javafx.scene.shape.Ellipse;
 public class World extends Feature{
     public Ellipse planet = new Ellipse();
     public PlanetPositioner pos;
-    public Connector connecta;
 
     World(){
         system = new StarSystem();
         orbit = new Orbit(this);
         system.setup_rendering(form);
-        connecta = new Connector(this);
+        this.connectorIn = new Connector(this);
     }
 
     @Override //will pass around a group recursively of all the non-draggable elements such as orbits
@@ -27,7 +28,6 @@ public class World extends Feature{
 
             orbit.render();
             system.render();
-            connecta.render();
 
         } else {
             //change generation so it asks orbit where it should be and sends its angle.
@@ -37,7 +37,7 @@ public class World extends Feature{
 
             Point2D objective = parent.getObjectivePoint();
             setObjectivePoint(objective);
-            System.out.println(parent.getObjectivePoint());
+
         }
 
         planet_right_click(planet); //imbues it with being right clickable
@@ -96,7 +96,7 @@ public class World extends Feature{
             system.addRendering(this);
         }
 
-        connecta.setVisible(true);
+        connectorIn.setVisible(true);
         imbuePositioning();
         returnToZero();
     }
