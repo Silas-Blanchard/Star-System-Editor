@@ -18,12 +18,15 @@ public class PlanetPositioner {
 
     Point2D startObjPoint;
 
+    Feature reference;
+
     public PlanetPositioner (Ellipse handle, World reference){
         this(handle, reference, false);
     }
 
     public PlanetPositioner (Ellipse ell, World reference, Boolean isDraggable){
         this.handle = ell;
+        this.reference = reference;
 
         Sim sim = Sim.getSim();
         if(isDraggable){
@@ -44,26 +47,45 @@ public class PlanetPositioner {
 
                 //reference.connectorIn.renderInDrag(prevX + deltaX + reference.objectivePoint.getX(), prevY + deltaY + reference.objectivePoint.getY());
 
+                // if(reference.parent != null){
+                //     for(Feature f:reference.parent.system.features){
+                //         if(f.is_expanded){
+                //             f.connectorIn.setStart(f.getShapeLoc());
+                //             reference.connectorIn.render();
+                //         }
+                //     }
+                // }
+
                 for(Feature f:reference.system.features){
-                    System.out.println("Wumbo");
                     if(f.is_expanded){
-                        f.connectorIn.setStart(f.getShapeLoc());
-                        reference.connectorIn.render();
+                        Point2D offset = f.getShapeOffset();
+                        //Point2D offset = f.getShapeLoc();
+                        Point2D obj = f.getObjectivePoint();
+                        Point2D currentPoint = new Point2D(prevX + deltaX + obj.getX(), prevY + deltaY + obj.getY());
+                        //Point2D currentPoint = new Point2D(prevX + deltaX + offset.getX(), prevY + deltaY + offset.getY());
+                        f.connectorIn.setStart(currentPoint);
+                        f.connectorIn.render();
                     }
-                }  
+                }
+
+                if(reference.parent != null){
+                    Point2D obj = reference.getObjectivePoint();
+                    //reference.connectorIn.setStart(new Point2D(prevX + deltaX + obj.getX(), prevY + deltaY + obj.getY()));
+                    reference.connectorIn.setStart(obj);
+                }
 
                 Point2D gah = new Point2D(prevX + deltaX + reference.objectivePoint.getX(), prevY + deltaY + reference.objectivePoint.getY());
                 reference.connectorIn.setEnd(gah);
 
                 reference.connectorIn.render();
 
-                System.out.println(reference.connectorIn.line);
+                //System.out.println(reference.connectorIn.line);
 
                 e.consume();
             });
 
-            handle.setOnMouseDragReleased(e ->{
-                reference.deltaObjPoint(new Point2D(prevX + deltaY, prevY + deltaX));
+            handle.setOnMouseReleased(e ->{
+                reference.setObjectivePoint(reference.form.localToParent(new Point2D(prevX + deltaX, prevY + deltaY)));
                 //reference.connectorIn.render();
                 e.consume();
             });

@@ -36,6 +36,8 @@ public abstract class Feature{
 
     public Point2D shapeOffset = new Point2D(0, 0);
 
+    public Point2D markerOffset = new Point2D(0, 0); //stores shapeoffset for when the planet is liberated
+
     public Point2D objectivePoint;
 
     public Connector connectorIn;

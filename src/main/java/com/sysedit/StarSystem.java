@@ -49,7 +49,6 @@ public class StarSystem {
 
     public void remove_rendering(Feature f){
         objects.remove(f.form);
-        features.remove(f);
     }
 
     public void remove_system(){

@@ -37,6 +37,7 @@ public class Connector {
             line.setEndX(end.getX());
             line.setEndY(end.getY());
         }
+        //System.out.println(line);
     }
 
     public void setVisible(Boolean b){

@@ -15,6 +15,7 @@ public class World extends Feature{
         orbit = new Orbit(this);
         system.setup_rendering(form);
         this.connectorIn = new Connector(this);
+        planet_right_click(planet); //imbues it with being right clickable
     }
 
     @Override //will pass around a group recursively of all the non-draggable elements such as orbits
@@ -35,12 +36,9 @@ public class World extends Feature{
 
             orbit.render();
 
-            Point2D objective = parent.getObjectivePoint();
-            setObjectivePoint(objective);
+            setObjectivePoint(parent.getObjectivePoint());
 
         }
-
-        planet_right_click(planet); //imbues it with being right clickable
 
         planet.setRadiusX(radius);
         planet.setRadiusY(radius);
@@ -52,8 +50,10 @@ public class World extends Feature{
 
     public void returnToZero(){
         //this just makes the current planet offset + objective point be the new objective point
-        setObjectivePoint(new Point2D(shapeOffset.getX() + objectivePoint.getX(), shapeOffset.getY() + objectivePoint.getY()));
-        setShapeOffset(new Point2D(0, 0));
+        setObjectivePoint(form.localToParent(new Point2D(shapeOffset.getX(), shapeOffset.getY())));
+        //setShapeOffset(new Point2D(0, 0));
+        planet.setLayoutX(0);
+        planet.setLayoutY(0);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class World extends Feature{
 
     @Override
     public void setObjectivePoint(Point2D p) {
-        objectivePoint = p;
+        this.objectivePoint = new Point2D(p.getX(), p.getY());
         form.setLayoutX(p.getX());
         form.setLayoutY(p.getY());
     }
@@ -73,6 +73,7 @@ public class World extends Feature{
         planet.setLayoutX(p.getX());
         planet.setLayoutY(p.getY());
         this.shapeOffset = p;
+        this.markerOffset = new Point2D(p.getX(), p.getX());
     }
 
     @Override
