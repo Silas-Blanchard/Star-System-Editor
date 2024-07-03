@@ -16,6 +16,8 @@ public class World extends Feature{
         system.setup_rendering(form);
         this.connectorIn = new Connector(this);
         planet_right_click(planet); //imbues it with being right clickable
+        planet.setLayoutX(0);
+        planet.setLayoutY(0);
     }
 
     @Override //will pass around a group recursively of all the non-draggable elements such as orbits
@@ -93,6 +95,8 @@ public class World extends Feature{
         if(parent != null){
             Point2D objective = parent.getObjectivePoint();
             setObjectivePoint(objective);
+
+            System.out.print(objective);
 
             system.addRendering(this);
         }

@@ -20,6 +20,8 @@ public class PlanetPositioner {
 
     Feature reference;
 
+    Boolean isDragging = false; //keeps track of if positioner is currently being dragged. Important for limiting onMouseReleased
+
     public PlanetPositioner (Ellipse handle, World reference){
         this(handle, reference, false);
     }
@@ -39,6 +41,7 @@ public class PlanetPositioner {
             }); 
 
             handle.setOnMouseDragged(e ->{ //setting objective point ruins everything. Access it directly.
+                isDragging = true;
                 deltaX = e.getSceneX() - startX;
                 deltaY = e.getSceneY() - startY;
 
@@ -85,9 +88,16 @@ public class PlanetPositioner {
             });
 
             handle.setOnMouseReleased(e ->{
-                reference.setObjectivePoint(reference.form.localToParent(new Point2D(prevX + deltaX, prevY + deltaY)));
+                if(isDragging){
+                    reference.setObjectivePoint(reference.form.localToParent(new Point2D(prevX + deltaX, prevY + deltaY)));
+                    e.consume();
+                }
+                
+                isDragging = false;
                 //reference.connectorIn.render();
-                e.consume();
+
+                //this needs to reset the values mayeb that will help
+                //System.out.println(reference.getObjectivePoint());
             });
         }
         else{

@@ -170,4 +170,8 @@ public class Sim {
     public void addNewConnector(Connector c){
         connectors.add(c);
     }
+
+    public Feature getSystemParent(){
+        return system_parent;
+    }
 }

@@ -65,7 +65,12 @@ public class MainEditorControl {
 
     @FXML
     public void deselect_all(ActionEvent event) {
-
+        Feature pie = sim.getSystemParent();
+        Point2D pi = pie.getObjectivePoint();
+        
+        System.out.println(sim.getSystemParent().getObjectivePoint());
+        System.out.println(sim.getSystemParent().form.getLayoutX() + " Layout X");
+        System.out.println(sim.getSystemParent().form.getLayoutY() + " Layout Y");
     }
 
     @FXML
