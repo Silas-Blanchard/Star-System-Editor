@@ -125,5 +125,6 @@ public class MainEditorControl {
         scroller.setContent(stacky);
 
         sim.startPoint = new Point2D(largeImage.getWidth() / 2, largeImage.getHeight() / 2);
+        sim.translateTheGroup(sim.startPoint.getX(), sim.startPoint.getY());
     }
 }

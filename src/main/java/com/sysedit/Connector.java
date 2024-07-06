@@ -3,7 +3,6 @@ package com.sysedit;
 
 
 import javafx.geometry.Point2D;
-import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
@@ -37,7 +36,7 @@ public class Connector {
             line.setEndX(end.getX());
             line.setEndY(end.getY());
         }
-        //System.out.println(line);
+        System.out.println(line);
     }
 
     public void setVisible(Boolean b){

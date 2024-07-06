@@ -35,8 +35,8 @@ public class PlanetPositioner {
             handle.setOnMousePressed(e ->{
                 startX = e.getSceneX();
                 startY = e.getSceneY();
-                prevX = reference.system.subgroup.getLayoutX();
-                prevY = reference.system.subgroup.getLayoutY();
+                prevX = reference.system.subgroup.getTranslateX();
+                prevY = reference.system.subgroup.getTranslateY();
                 e.consume(); 
             }); 
 
@@ -45,44 +45,24 @@ public class PlanetPositioner {
                 deltaX = e.getSceneX() - startX;
                 deltaY = e.getSceneY() - startY;
 
-                reference.system.subgroup.setLayoutX(prevX + deltaX);
-                reference.system.subgroup.setLayoutY(prevY + deltaY);
+                reference.system.subgroup.setTranslateX(prevX + deltaX);
+                reference.system.subgroup.setTranslateY(prevY + deltaY);
 
-                //reference.connectorIn.renderInDrag(prevX + deltaX + reference.objectivePoint.getX(), prevY + deltaY + reference.objectivePoint.getY());
-
-                // if(reference.parent != null){
-                //     for(Feature f:reference.parent.system.features){
-                //         if(f.is_expanded){
-                //             f.connectorIn.setStart(f.getShapeLoc());
-                //             reference.connectorIn.render();
-                //         }
-                //     }
-                // }
+                //below is the logic for the connector class stored in reference.connectorIn
+                Point2D movedBy = new Point2D(reference.system.subgroup.getTranslateX(), reference.system.subgroup.getTranslateY());
 
                 for(Feature f:reference.system.features){
                     if(f.is_expanded){
                         Point2D offset = f.getShapeOffset();
-                        //Point2D offset = f.getShapeLoc();
-                        Point2D obj = f.getObjectivePoint();
-                        Point2D currentPoint = new Point2D(prevX + deltaX + obj.getX(), prevY + deltaY + obj.getY());
-                        //Point2D currentPoint = new Point2D(prevX + deltaX + offset.getX(), prevY + deltaY + offset.getY());
+                        Point2D currentPoint = new Point2D(movedBy.getX() + offset.getX(), movedBy.getY() + offset.getY());
                         f.connectorIn.setStart(currentPoint);
                         f.connectorIn.render();
                     }
                 }
 
-                if(reference.parent != null){
-                    Point2D obj = reference.getObjectivePoint();
-                    //reference.connectorIn.setStart(new Point2D(prevX + deltaX + obj.getX(), prevY + deltaY + obj.getY()));
-                    reference.connectorIn.setStart(obj);
-                }
-
-                Point2D gah = new Point2D(prevX + deltaX + reference.objectivePoint.getX(), prevY + deltaY + reference.objectivePoint.getY());
-                reference.connectorIn.setEnd(gah);
+                reference.connectorIn.setEnd(new Point2D(movedBy.getX() + reference.form.getTranslateX(), movedBy.getY() + reference.form.getTranslateY()));
 
                 reference.connectorIn.render();
-
-                //System.out.println(reference.connectorIn.line);
 
                 e.consume();
             });
@@ -90,12 +70,12 @@ public class PlanetPositioner {
             handle.setOnMouseReleased(e ->{
                 if(isDragging){
                     //reference.setObjectivePoint(reference.form.localToParent(new Point2D(prevX + deltaX, prevY + deltaY)));
-                    //reference.objectivePoint = reference.form.localToParent(new Point2D(prevX + deltaX, prevY + deltaY));
-                    reference.objectivePoint = reference.getCenterPoint();
-                    System.out.println(reference.objectivePoint);
-                    System.out.println(reference.getCenterPoint());
+                    reference.objectivePoint = new Point2D(reference.system.subgroup.getTranslateX(), reference.system.subgroup.getTranslateY());
+                    // reference.objectivePoint = reference.getCenterPoint();
+                    // System.out.println(reference.objectivePoint);
+                    // System.out.println(reference.getCenterPoint());
                     e.consume();
-                    System.out.println("Hey ya");
+                    // System.out.println("Hey ya");
                 }
 
                 //USE relocate() as it accounts for minX which is not currently accounted for. 

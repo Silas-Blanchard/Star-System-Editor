@@ -29,6 +29,8 @@ public class Sim {
 
     public Point2D startPoint;
 
+    public Point2D origin = new Point2D(0, 0);
+
     public ArrayList<Connector> connectors = new ArrayList<Connector>();
 
     public static Sim getSim(){
@@ -78,7 +80,7 @@ public class Sim {
             system_parent.orbit.perigee = 0.0;
             system_parent.orbit.apogee = 0.0;
             system_parent.name = "Center";
-            system_parent.setObjectivePoint(startPoint);
+            system_parent.setObjectivePoint(origin);
             system_parent.imbuePositioning();
         }
         else{
@@ -142,8 +144,6 @@ public class Sim {
         // Circle centerMark = new Circle(0.0, 0.0, 1.0);
         // centerMark.setFill(Color.RED);
         // add_node(centerMark);
-        the_group.setLayoutY(0);
-        the_group.setLayoutX(0);
     }
 
     public void create_satellite(Feature host){
@@ -164,5 +164,10 @@ public class Sim {
 
     public Feature getSystemParent(){
         return system_parent;
+    }
+
+    public void translateTheGroup(double x, double y){
+        the_group.setLayoutX(x);
+        the_group.setLayoutY(y);
     }
 }

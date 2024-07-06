@@ -60,10 +60,10 @@ public class World extends Feature{
 
     public void returnToZero(){
         //this just makes the current planet offset + objective point be the new objective point
-        setObjectivePoint(form.localToParent(new Point2D(shapeOffset.getX(), shapeOffset.getY())));
+        setObjectivePoint(new Point2D(shapeOffset.getX() + parent.getObjectivePoint().getX(), shapeOffset.getY() + parent.getObjectivePoint().getY()));
         //setShapeOffset(new Point2D(0, 0));
-        planet.setLayoutX(0);
-        planet.setLayoutY(0);
+        planet.setTranslateX(0);
+        planet.setTranslateY(0);
     }
 
     @Override
@@ -74,14 +74,14 @@ public class World extends Feature{
     @Override
     public void setObjectivePoint(Point2D p) {
         this.objectivePoint = new Point2D(p.getX(), p.getY());
-        form.setLayoutX(p.getX());
-        form.setLayoutY(p.getY());
+        form.setTranslateX(p.getX());
+        form.setTranslateY(p.getY());
     }
 
     @Override
     public void setShapeOffset(Point2D p) {
-        planet.setLayoutX(p.getX());
-        planet.setLayoutY(p.getY());
+        planet.setTranslateX(p.getX());
+        planet.setTranslateY(p.getY());
         this.shapeOffset = p;
     }
 
@@ -108,9 +108,12 @@ public class World extends Feature{
             system.addRendering(this);
         }
 
-        connectorIn.setVisible(true);
         imbuePositioning();
         returnToZero();
+
+        connectorIn.setVisible(true);
+        connectorIn.setStart(objectivePoint);
+        connectorIn.setEnd(objectivePoint);
     }
 
     @Override

@@ -71,7 +71,7 @@ public class Rightclickcontrol {
     @FXML
     void toggleOrbit(ActionEvent event) {
         reference.show_orbit = !reference.show_orbit;
-        sim.updateScene();
+        //sim.updateScene();
     }
 
     @FXML

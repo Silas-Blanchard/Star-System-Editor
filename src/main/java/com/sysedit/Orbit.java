@@ -66,8 +66,8 @@ public class Orbit {
         }
         if(parent != null && parent.getObjectivePoint() != null){
             Point2D h = parent.getObjectivePoint();
-            form.setLayoutX(h.getX());
-            form.setLayoutY(h.getY());
+            // form.setLayoutX(h.getX());
+            // form.setLayoutY(h.getY());
         }
     }
 
