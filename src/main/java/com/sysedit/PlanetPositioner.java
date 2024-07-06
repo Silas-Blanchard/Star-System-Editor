@@ -89,9 +89,16 @@ public class PlanetPositioner {
 
             handle.setOnMouseReleased(e ->{
                 if(isDragging){
-                    reference.setObjectivePoint(reference.form.localToParent(new Point2D(prevX + deltaX, prevY + deltaY)));
+                    //reference.setObjectivePoint(reference.form.localToParent(new Point2D(prevX + deltaX, prevY + deltaY)));
+                    //reference.objectivePoint = reference.form.localToParent(new Point2D(prevX + deltaX, prevY + deltaY));
+                    reference.objectivePoint = reference.getCenterPoint();
+                    System.out.println(reference.objectivePoint);
+                    System.out.println(reference.getCenterPoint());
                     e.consume();
+                    System.out.println("Hey ya");
                 }
+
+                //USE relocate() as it accounts for minX which is not currently accounted for. 
                 
                 isDragging = false;
                 //reference.connectorIn.render();

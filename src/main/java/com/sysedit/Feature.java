@@ -3,6 +3,7 @@ package com.sysedit;
 import java.io.IOException;
 
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -36,8 +37,6 @@ public abstract class Feature{
 
     public Point2D shapeOffset = new Point2D(0, 0);
 
-    public Point2D markerOffset = new Point2D(0, 0); //stores shapeoffset for when the planet is liberated
-
     public Point2D objectivePoint;
 
     public Connector connectorIn;
@@ -50,7 +49,7 @@ public abstract class Feature{
             contextmenu = loader.load();
             controller = loader.getController();
         } catch (IOException ex){
-
+            System.out.println("Exception catch placeholder");
         }
     }
 
@@ -92,7 +91,9 @@ public abstract class Feature{
 
         parent.system.add_feature(this);
 
-        setObjectivePoint(parent.getObjectivePoint());
+        objectivePoint = parent.objectivePoint;
+
+        //setObjectivePoint(parent.getObjectivePoint());
     }
 
     public Point2D getShapeOffset(){
@@ -104,6 +105,8 @@ public abstract class Feature{
     public Point2D getObjectivePoint(){
         return objectivePoint;
     }
+
+    abstract public Point2D getCenterPoint(); 
 
     abstract public void imbuePositioning();
 

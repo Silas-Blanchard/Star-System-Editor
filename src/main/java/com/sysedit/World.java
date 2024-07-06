@@ -2,6 +2,7 @@ package com.sysedit;
 
 import java.util.ArrayList;
 
+import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
@@ -16,13 +17,12 @@ public class World extends Feature{
         system.setup_rendering(form);
         this.connectorIn = new Connector(this);
         planet_right_click(planet); //imbues it with being right clickable
-        planet.setLayoutX(0);
-        planet.setLayoutY(0);
+        objectivePoint = new Point2D(0, 0);
+        setObjectivePoint(objectivePoint);
     }
 
     @Override //will pass around a group recursively of all the non-draggable elements such as orbits
     public void render() {
-        //setObjectivePoint(getObjectivePoint());
         if(form.getChildren().size() == 0){
             form.getChildren().add(planet);
         }
@@ -38,7 +38,9 @@ public class World extends Feature{
 
             orbit.render();
 
-            setObjectivePoint(parent.getObjectivePoint());
+            //setObjectivePoint(parent.getObjectivePoint());
+
+            connectorIn.setStart(objectivePoint);
 
         }
 
@@ -48,6 +50,12 @@ public class World extends Feature{
         planet.setFill(Color.WHITE);
         planet.setStroke(Color.BLACK);
         planet.setStrokeWidth(1.0);
+
+        // if(parent != null && parent.getObjectivePoint() != null){
+        //     Point2D h = parent.getObjectivePoint();
+        //     form.setLayoutX(h.getX());
+        //     form.setLayoutY(h.getY());
+        // }
     }
 
     public void returnToZero(){
@@ -75,7 +83,6 @@ public class World extends Feature{
         planet.setLayoutX(p.getX());
         planet.setLayoutY(p.getY());
         this.shapeOffset = p;
-        this.markerOffset = new Point2D(p.getX(), p.getX());
     }
 
     @Override
@@ -104,5 +111,14 @@ public class World extends Feature{
         connectorIn.setVisible(true);
         imbuePositioning();
         returnToZero();
+    }
+
+    @Override
+    public Point2D getCenterPoint(){
+        Bounds boundsInScene = form.localToScene(form.getBoundsInLocal());
+        double centerX = (boundsInScene.getMinX() + boundsInScene.getMaxX()) / 2;
+        double centerY = (boundsInScene.getMinY() + boundsInScene.getMaxY()) / 2;
+
+        return new Point2D(centerX, centerY);
     }
 }

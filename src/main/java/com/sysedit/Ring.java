@@ -47,5 +47,11 @@ public class Ring extends Feature{
             // TODO Auto-generated method stub
             throw new UnsupportedOperationException("Unimplemented method 'imbuePositioning'");
         }
+
+        @Override
+        public Point2D getCenterPoint() {
+            // TODO Auto-generated method stub
+            throw new UnsupportedOperationException("Unimplemented method 'getCenterPoint'");
+        }
     
 }

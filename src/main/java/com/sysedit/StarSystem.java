@@ -3,6 +3,8 @@ package com.sysedit;
 import java.util.ArrayList;
 
 import javafx.event.EventHandler;
+import javafx.geometry.Bounds;
+import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.input.DragEvent;

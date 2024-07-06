@@ -67,6 +67,10 @@ public class MainEditorControl {
     public void deselect_all(ActionEvent event) {
         Feature pie = sim.getSystemParent();
         Point2D pi = pie.getObjectivePoint();
+
+        Group the_group = sim.get_the_group();
+
+        //pie.setObjectivePoint(new Point2D(0, 0));
         
         System.out.println(sim.getSystemParent().getObjectivePoint());
         System.out.println(sim.getSystemParent().form.getLayoutX() + " Layout X");
@@ -113,8 +117,7 @@ public class MainEditorControl {
 
         Sim sim = Sim.getSim();
         Group the_group = sim.get_the_group();
-        Group special_group = sim.get_special_group();
-        Pane mainpane = new Pane(the_group, special_group);
+        Pane mainpane = new Pane(the_group);
 
         StackPane stacky = new StackPane();
         stacky.getChildren().addAll(imageView, mainpane);

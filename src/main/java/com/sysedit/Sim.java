@@ -20,8 +20,7 @@ public class Sim {
     private static Sim the_only_sim = null;
     private Stage window;
     private Group selection;
-    private Group the_group = new Group(); //Note to self all shapes stored in this one. 
-    private Group special_group = new Group(); //except for draggable elements (:
+    private Group the_group = new Group(); //All shapes are stored in this.
 
     private Group copied;
     private World system_parent;
@@ -71,10 +70,6 @@ public class Sim {
         return the_group;
     }
 
-    public Group get_special_group(){
-        return special_group;
-    }
-
     public void set_new_parent(){
         if (system_parent == null){
             system_parent = new World();
@@ -111,8 +106,6 @@ public class Sim {
     public ScrollPane get_scrollpane(){
         return this.pane_thats_saved;
     }
-
-    
 
     public void set_title(String t){
         title = t;
@@ -151,8 +144,6 @@ public class Sim {
         // add_node(centerMark);
         the_group.setLayoutY(0);
         the_group.setLayoutX(0);
-        special_group.setLayoutY(0);
-        special_group.setLayoutX(0);
     }
 
     public void create_satellite(Feature host){
