@@ -62,12 +62,6 @@ public class Orbit {
 
             orbit_ellipse = i;
             form.getChildren().add(orbit_ellipse);
-
-        }
-        if(parent != null && parent.getObjectivePoint() != null){
-            Point2D h = parent.getObjectivePoint();
-            // form.setLayoutX(h.getX());
-            // form.setLayoutY(h.getY());
         }
     }
 
@@ -106,15 +100,15 @@ public class Orbit {
         reference.setShapeOffset(new Point2D(planet_x, planet_y));
 
         Circle point = new Circle();
-        point.setLayoutX(planet_x - form.getLayoutX()); //point is moved relative to the center of the group
-        point.setLayoutY(planet_y);
+        point.setTranslateX(planet_x);
+        point.setTranslateY(planet_y);
 
         point.setRadius(1);
         point.setFill(Color.WHITE);
 
         Circle outline = new Circle();
-        outline.setLayoutX(planet_x - form.getLayoutX());
-        outline.setLayoutY(planet_y);
+        outline.setTranslateX(planet_x);
+        outline.setTranslateY(planet_y);
         outline.setRadius(5);
         outline.setFill(Color.TRANSPARENT);
         outline.setStrokeWidth(1.0);
@@ -136,8 +130,8 @@ public class Orbit {
         orbit.getTransforms().add(rotateTransform);
 
         //this bit is for putting the parent in the focus of the ellipse
-        Double focalLength = Math.sqrt(semimajor * semimajor - semiminor * semiminor);
-        form.setLayoutX(focalLength);
+        // Double focalLength = Math.sqrt(semimajor * semimajor - semiminor * semiminor);
+        // form.setLayoutX(focalLength);
 
         return orbit;
     }
@@ -145,5 +139,11 @@ public class Orbit {
     public void set_parent(Feature parent){
         this.parent = parent;
         rotateTransform = new Rotate(75, 0, 0, 0, Rotate.X_AXIS);
+    }
+
+    public void deltaOrbit(double d){
+        perigee += d;
+        apogee += d;
+        render();
     }
 }

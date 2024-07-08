@@ -106,6 +106,10 @@ public abstract class Feature{
         return objectivePoint;
     }
 
+    public Point2D addPoints(Point2D p, Point2D q){
+        return new Point2D(p.getX() + q.getX(), p.getY() + q.getY());
+    }
+
     abstract public Point2D getCenterPoint(); 
 
     abstract public void imbuePositioning();

@@ -32,64 +32,60 @@ public class PlanetPositioner {
 
         Sim sim = Sim.getSim();
         if(isDraggable){
-            handle.setOnMousePressed(e ->{
-                startX = e.getSceneX();
-                startY = e.getSceneY();
-                prevX = reference.system.subgroup.getTranslateX();
-                prevY = reference.system.subgroup.getTranslateY();
-                e.consume(); 
-            }); 
-
-            handle.setOnMouseDragged(e ->{ //setting objective point ruins everything. Access it directly.
-                isDragging = true;
-                deltaX = e.getSceneX() - startX;
-                deltaY = e.getSceneY() - startY;
-
-                reference.system.subgroup.setTranslateX(prevX + deltaX);
-                reference.system.subgroup.setTranslateY(prevY + deltaY);
-
-                //below is the logic for the connector class stored in reference.connectorIn
-                Point2D movedBy = new Point2D(reference.system.subgroup.getTranslateX(), reference.system.subgroup.getTranslateY());
-
-                for(Feature f:reference.system.features){
-                    if(f.is_expanded){
-                        Point2D offset = f.getShapeOffset();
-                        Point2D currentPoint = new Point2D(movedBy.getX() + offset.getX(), movedBy.getY() + offset.getY());
-                        f.connectorIn.setStart(currentPoint);
-                        f.connectorIn.render();
-                    }
-                }
-
-                reference.connectorIn.setEnd(new Point2D(movedBy.getX() + reference.form.getTranslateX(), movedBy.getY() + reference.form.getTranslateY()));
-
-                reference.connectorIn.render();
-
-                e.consume();
-            });
-
-            handle.setOnMouseReleased(e ->{
-                if(isDragging){
-                    //reference.setObjectivePoint(reference.form.localToParent(new Point2D(prevX + deltaX, prevY + deltaY)));
-                    reference.objectivePoint = new Point2D(reference.system.subgroup.getTranslateX(), reference.system.subgroup.getTranslateY());
-                    // reference.objectivePoint = reference.getCenterPoint();
-                    // System.out.println(reference.objectivePoint);
-                    // System.out.println(reference.getCenterPoint());
-                    e.consume();
-                    // System.out.println("Hey ya");
-                }
-
-                //USE relocate() as it accounts for minX which is not currently accounted for. 
-                
-                isDragging = false;
-                //reference.connectorIn.render();
-
-                //this needs to reset the values mayeb that will help
-                //System.out.println(reference.getObjectivePoint());
-            });
+            immbueFreeDragging();
         }
         else{
-            handle.setOnMousePressed(null);
-            handle.setOnMouseDragged(null);
+            imbueStandardDragging();
         }
+    }
+
+    public void immbueFreeDragging(){
+        handle.setOnMousePressed(e ->{
+            startX = e.getSceneX();
+            startY = e.getSceneY();
+            prevX = reference.system.subgroup.getTranslateX();
+            prevY = reference.system.subgroup.getTranslateY();
+            e.consume(); 
+        }); 
+
+        handle.setOnMouseDragged(e ->{ //setting objective point ruins everything. Access it directly.
+            isDragging = true;
+            deltaX = e.getSceneX() - startX;
+            deltaY = e.getSceneY() - startY;
+
+            reference.system.subgroup.setTranslateX(prevX + deltaX);
+            reference.system.subgroup.setTranslateY(prevY + deltaY);
+
+            //below is the logic for the connector class stored in reference.connectorIn
+            Point2D movedBy = new Point2D(reference.system.subgroup.getTranslateX(), reference.system.subgroup.getTranslateY());
+
+            for(Feature f:reference.system.features){
+                if(f.is_expanded){
+                    Point2D offset = f.getShapeOffset();
+                    Point2D currentPoint = new Point2D(movedBy.getX() + offset.getX(), movedBy.getY() + offset.getY());
+                    f.connectorIn.setStart(currentPoint);
+                    f.connectorIn.render();
+                }
+            }
+
+            reference.connectorIn.setEnd(new Point2D(movedBy.getX() + reference.form.getTranslateX(), movedBy.getY() + reference.form.getTranslateY()));
+
+            reference.connectorIn.render();
+
+            e.consume();
+        });
+
+        handle.setOnMouseReleased(e ->{
+            if(isDragging){
+                reference.objectivePoint = new Point2D(reference.system.subgroup.getTranslateX(), reference.system.subgroup.getTranslateY());
+                e.consume();
+            }
+            isDragging = false;
+        });
+    }
+
+    public void imbueStandardDragging(){
+        handle.setOnMousePressed(null);
+        handle.setOnMouseDragged(null);
     }
 }

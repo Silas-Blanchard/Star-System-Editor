@@ -58,14 +58,6 @@ public class World extends Feature{
         // }
     }
 
-    public void returnToZero(){
-        //this just makes the current planet offset + objective point be the new objective point
-        setObjectivePoint(new Point2D(shapeOffset.getX() + parent.getObjectivePoint().getX(), shapeOffset.getY() + parent.getObjectivePoint().getY()));
-        //setShapeOffset(new Point2D(0, 0));
-        planet.setTranslateX(0);
-        planet.setTranslateY(0);
-    }
-
     @Override
     public void imbuePositioning(){
         PlanetPositioner pos = new PlanetPositioner(planet, this, true);
@@ -97,23 +89,27 @@ public class World extends Feature{
         if(this.system.equals(parent.system)){
             this.system = new StarSystem();
             parent.system.remove_rendering(this);
+
         }
 
         if(parent != null){
-            Point2D objective = parent.getObjectivePoint();
-            setObjectivePoint(objective);
-
-            System.out.print(objective);
+            objectivePoint = parent.getObjectivePoint();
+            //setObjectivePoint(objective);
 
             system.addRendering(this);
         }
 
+        planet.setTranslateX(0);
+        planet.setTranslateY(0);
+
         imbuePositioning();
-        returnToZero();
 
         connectorIn.setVisible(true);
-        connectorIn.setStart(objectivePoint);
+        connectorIn.setStart(addPoints(shapeOffset, objectivePoint));
         connectorIn.setEnd(objectivePoint);
+
+        system.subgroup.setTranslateX(parent.system.subgroup.getTranslateX() + shapeOffset.getX());
+        system.subgroup.setTranslateY(parent.system.subgroup.getTranslateY() + shapeOffset.getY());
     }
 
     @Override
