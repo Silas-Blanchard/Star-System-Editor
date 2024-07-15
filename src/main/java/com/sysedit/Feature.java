@@ -112,7 +112,7 @@ public abstract class Feature{
 
     abstract public Point2D getCenterPoint(); 
 
-    abstract public void imbuePositioning();
+    abstract public void imbuePositioning(Boolean b);
 
     abstract void liberate(); //frees a given object from its parent. Simple as
 

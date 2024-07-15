@@ -81,7 +81,7 @@ public class Sim {
             system_parent.orbit.apogee = 0.0;
             system_parent.name = "Center";
             system_parent.setObjectivePoint(origin);
-            system_parent.imbuePositioning();
+            system_parent.imbuePositioning(true);
         }
         else{
             World new_parent = new World();
@@ -154,6 +154,8 @@ public class Sim {
         new_world.show_orbit = true;
         new_world.is_expanded = false;
         new_world.setParent(host);
+
+        new_world.imbuePositioning(false);
 
         new_world.render();
     }

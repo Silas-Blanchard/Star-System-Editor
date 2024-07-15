@@ -43,7 +43,7 @@ public class Ring extends Feature{
         }
 
         @Override
-        public void imbuePositioning() {
+        public void imbuePositioning(Boolean b) {
             // TODO Auto-generated method stub
             throw new UnsupportedOperationException("Unimplemented method 'imbuePositioning'");
         }

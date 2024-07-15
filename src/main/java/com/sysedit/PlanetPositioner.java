@@ -6,6 +6,8 @@ import javafx.scene.shape.Ellipse;
 
 public class PlanetPositioner {
 
+    private Sim sim = Sim.getSim();
+
     private double deltaX;
     private double deltaY;
     private double startX;
@@ -85,7 +87,17 @@ public class PlanetPositioner {
     }
 
     public void imbueStandardDragging(){
-        handle.setOnMousePressed(null);
-        handle.setOnMouseDragged(null);
+        handle.setOnMousePressed(e->{
+
+        });
+        handle.setOnMouseDragged(e->{
+            reference.orbit.setOrbitDegrees(angleBetweenPoints(sim.get_the_group().localToScene(reference.parent.objectivePoint), new Point2D(e.getSceneX(), e.getSceneY())));
+        });
+    }
+    
+    public double angleBetweenPoints(Point2D p, Point2D q){
+        double d = Math.atan(p.getY() - q.getY() / p.getX() - p.getX());
+        System.out.println(d);
+        return Math.toDegrees(d);
     }
 }

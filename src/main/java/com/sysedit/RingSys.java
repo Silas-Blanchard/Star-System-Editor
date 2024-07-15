@@ -40,14 +40,14 @@ public class RingSys extends Feature{
     }
 
     @Override
-    public void imbuePositioning() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'imbuePositioning'");
-    }
-
-    @Override
     public Point2D getCenterPoint() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getCenterPoint'");
+    }
+
+    @Override
+    public void imbuePositioning(Boolean b) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'imbuePositioning'");
     }
 }

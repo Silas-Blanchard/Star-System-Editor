@@ -59,8 +59,8 @@ public class World extends Feature{
     }
 
     @Override
-    public void imbuePositioning(){
-        PlanetPositioner pos = new PlanetPositioner(planet, this, true);
+    public void imbuePositioning(Boolean b){
+        PlanetPositioner pos = new PlanetPositioner(planet, this, b);
     }
 
     @Override
@@ -102,7 +102,7 @@ public class World extends Feature{
         planet.setTranslateX(0);
         planet.setTranslateY(0);
 
-        imbuePositioning();
+        imbuePositioning(true);
 
         connectorIn.setVisible(true);
         connectorIn.setStart(addPoints(shapeOffset, objectivePoint));

@@ -2,6 +2,7 @@ package com.sysedit;
 
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
+import javafx.geometry.Point3D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.effect.PerspectiveTransform;
@@ -12,6 +13,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Shape;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Transform;
 
 import java.lang.Math; 
 
@@ -27,6 +29,7 @@ public class Orbit {
 
     private Feature parent;
     public Rotate rotateTransform;
+    public Rotate inclinationTransform;
 
     public Group form = new Group();
 
@@ -44,36 +47,30 @@ public class Orbit {
         this.parent = reference.parent;
 
         reference.system.setup_rendering(form);
+
+        rotateTransform = new Rotate(75, 0, 0, 0, Rotate.X_AXIS);
+        inclinationTransform = new Rotate(0, 0, 0, 0, Rotate.Y_AXIS);
     }
 
     public void render(){
         //For some reason it does not agree with moving the planet. Seems to be pushed way to the left and the marker is similarly lost
         if (reference.show_orbit){
-            Ellipse i = getOrbit();
-            i.setStrokeWidth(2.0);
-            i.setStroke(Color.WHITE);
-            i.setFill(Color.TRANSPARENT);
-            i.setMouseTransparent(true);
-
             form.getChildren().clear();
 
-            planetMarker = renderPlanet(i, rotateTransform);
-            form.getChildren().add(planetMarker);
+            getOrbit();
+            orbit_ellipse.setStrokeWidth(2.0);
+            orbit_ellipse.setStroke(Color.WHITE);
+            orbit_ellipse.setFill(Color.TRANSPARENT);
+            orbit_ellipse.setMouseTransparent(true);
 
-            orbit_ellipse = i;
-            form.getChildren().add(orbit_ellipse);
+            renderPlanet(orbit_ellipse);
         }
     }
 
-    private Group renderPlanet(Ellipse orbit, Rotate rotate){
-        //bounds to find true length and height
-        Bounds bounds = orbit.localToScene(orbit.getBoundsInLocal());
-        double updatedWidth = bounds.getWidth();
-        double updatedHeight = bounds.getHeight();
-
-        //I want to explain this bit
-        Double radiusX = updatedWidth / 2;
-        Double radiusY = updatedHeight / 2;
+    private void renderPlanet(Ellipse orbit){
+        //All of this takes place in the local coord system of the orbit!
+        Double radiusX = orbit.getRadiusX();
+        Double radiusY = orbit.getRadiusY();
 
         Double semimajor;
         Double semiminor;
@@ -97,27 +94,30 @@ public class Orbit {
         planet_x = r * Math.cos(angle);
         planet_y = r * Math.sin(angle);
 
-        reference.setShapeOffset(new Point2D(planet_x, planet_y));
+        Point2D adjustedPoint = orbit.localToParent(planet_x, planet_y);
+
+        reference.setShapeOffset(adjustedPoint);
 
         Circle point = new Circle();
-        point.setTranslateX(planet_x);
-        point.setTranslateY(planet_y);
-
         point.setRadius(1);
         point.setFill(Color.WHITE);
 
         Circle outline = new Circle();
-        outline.setTranslateX(planet_x);
-        outline.setTranslateY(planet_y);
         outline.setRadius(5);
         outline.setFill(Color.TRANSPARENT);
         outline.setStrokeWidth(1.0);
         outline.setStroke(Color.WHITE);
 
-        return new Group(point, outline);
+        planetMarker = new Group(point, outline);
+        
+        planetMarker.setTranslateX(adjustedPoint.getX());
+        planetMarker.setTranslateY(adjustedPoint.getY());
+        
+        form.getChildren().add(planetMarker);
+
     }
 
-    private Ellipse getOrbit(){
+    private void getOrbit(){
         Double a = reference.apogee;
         Double p = reference.perigee;
 
@@ -127,23 +127,35 @@ public class Orbit {
 
         Ellipse orbit = new Ellipse(0, 0, semimajor, semiminor);
 
-        orbit.getTransforms().add(rotateTransform);
+        orbit.getTransforms().addAll(inclinationTransform, rotateTransform);
 
         //this bit is for putting the parent in the focus of the ellipse
         // Double focalLength = Math.sqrt(semimajor * semimajor - semiminor * semiminor);
         // form.setLayoutX(focalLength);
 
-        return orbit;
+        this.orbit_ellipse = orbit;
+        form.getChildren().addAll(orbit_ellipse);
     }
     
     public void set_parent(Feature parent){
         this.parent = parent;
-        rotateTransform = new Rotate(75, 0, 0, 0, Rotate.X_AXIS);
     }
 
-    public void deltaOrbit(double d){
-        perigee += d;
-        apogee += d;
+    public void setOrbitDegrees(double degrees){
+        reference.angle = degrees;
+        this.angle = reference.angle;
+        render();
+    }
+
+    public void deltaOrbit(double degrees){
+        reference.perigee += degrees;
+        reference.apogee += degrees;
+        render();
+    }
+
+    public void deltaInclinationDegrees(double degrees){
+        this.inclination += degrees;
+        inclinationTransform = new Rotate(inclination, 0, 0, 0, Rotate.Y_AXIS);
         render();
     }
 }
