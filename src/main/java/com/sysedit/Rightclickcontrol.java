@@ -65,7 +65,7 @@ public class Rightclickcontrol {
 
     @FXML
     void delete(ActionEvent event) {
-
+        reference.deleteFeature();
     }
 
     @FXML

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
+import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
 
@@ -120,4 +122,69 @@ public class World extends Feature{
 
         return new Point2D(centerX, centerY);
     }
+
+    @Override
+    public Feature getCopy(boolean makeDeepCopy) {
+        if(makeDeepCopy){
+            return getDeepCopy();
+        }
+        return internalGetCopy();
+    }
+
+    private World internalGetCopy(){
+        World newWorld = new World();
+        newWorld.angle = this.angle;
+        newWorld.apogee = this.apogee;
+        newWorld.perigee = this.perigee;
+        newWorld.name = this.name;
+        newWorld.radius = this.radius;
+
+        newWorld.show_orbit = true;
+        newWorld.is_expanded = false;
+
+        newWorld.setParent(this.parent);
+        newWorld.imbuePositioning(false);
+
+        return newWorld;
+    }
+
+    private Feature getDeepCopy(){
+        World newWorld = internalGetCopy();
+
+        for(Feature f : this.system.features){
+            Feature fCopy = f.getCopy(true);
+            fCopy.setParent(newWorld);
+            newWorld.system.add_feature(fCopy);
+        }
+
+        return newWorld;
+    }
+
+    @Override
+    void deleteFeature() {
+        this.system.deleteFeatureRendering();
+        if(parent != null){
+            parent.system.removeFeature(this);
+            parent.system.remove_rendering(this);
+            parent.render();
+        }
+        if(this == sim.getSystemParent()){
+            sim.set_new_parent();
+        }
+
+        for(Node i:sim.get_the_group().getChildren()){
+            if(javafx.scene.Group.class.isInstance(i)){
+                for(Node j:sim.get_the_group().getChildren()){
+                    System.out.println(j);
+                }
+            }
+        }
+    }
+
+    @Override
+    Feature cutFeature() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'cutFeature'");
+    }
+
 }

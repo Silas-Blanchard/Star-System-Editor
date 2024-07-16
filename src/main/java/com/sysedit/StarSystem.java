@@ -2,20 +2,12 @@ package com.sysedit;
 
 import java.util.ArrayList;
 
-import javafx.event.EventHandler;
-import javafx.geometry.Bounds;
-import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
-import javafx.scene.shape.Shape;
 
 public class StarSystem {
     public ArrayList<Feature> features = new ArrayList<>();
     public Group subgroup = new Group();
-    private Feature parent;
     public ArrayList<Node> objects;
     Sim sim;
 
@@ -67,5 +59,9 @@ public class StarSystem {
     public void addRendering(Feature f){
         objects.add(f.form);
         subgroup.getChildren().add(f.form);
+    }
+
+    public void deleteFeatureRendering(){
+        sim.remove_node(subgroup);
     }
 }

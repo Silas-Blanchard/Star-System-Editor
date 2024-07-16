@@ -3,7 +3,6 @@ package com.sysedit;
 import java.io.IOException;
 
 import javafx.beans.binding.Bindings;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

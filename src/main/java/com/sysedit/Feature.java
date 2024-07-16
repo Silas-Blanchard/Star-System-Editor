@@ -121,4 +121,10 @@ public abstract class Feature{
     abstract public void deltaObjPoint(Point2D p);
 
     abstract void render(); //recursive! Updates the form of all features in the system
+
+    abstract Feature getCopy(boolean makeDeepCopy); //optionally recursive (: if lame and not recursive it just spits out a regular copy of just itself
+
+    abstract void deleteFeature();
+
+    abstract Feature cutFeature();
 }

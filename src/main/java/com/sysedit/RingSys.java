@@ -50,4 +50,22 @@ public class RingSys extends Feature{
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'imbuePositioning'");
     }
+
+    @Override
+    Feature getCopy(boolean makeDeepCopy) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getCopy'");
+    }
+
+    @Override
+    void deleteFeature() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'deleteFeature'");
+    }
+
+    @Override
+    Feature cutFeature() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'cutFeature'");
+    }
 }

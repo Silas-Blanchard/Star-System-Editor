@@ -91,13 +91,18 @@ public class PlanetPositioner {
 
         });
         handle.setOnMouseDragged(e->{
-            reference.orbit.setOrbitDegrees(angleBetweenPoints(sim.get_the_group().localToScene(reference.parent.objectivePoint), new Point2D(e.getSceneX(), e.getSceneY())));
+            reference.orbit.setOrbitDegrees(angleBetweenPoints(reference.parent.objectivePoint, reference.parent.form.sceneToLocal(e.getSceneX(), e.getSceneY())));
+            e.consume();
         });
     }
     
     public double angleBetweenPoints(Point2D p, Point2D q){
-        double d = Math.atan(p.getY() - q.getY() / p.getX() - p.getX());
-        System.out.println(d);
-        return Math.toDegrees(d);
+        double d = Math.atan2((p.getY() - q.getY()) , (p.getX() - q.getX()));
+
+        double degrees = Math.toDegrees(d);
+
+        degrees = (degrees + 180) % 360;
+    
+        return degrees;
     }
 }
