@@ -1,17 +1,20 @@
 package com.sysedit;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
@@ -19,6 +22,7 @@ import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 
 public class MainEditorControl {
     private Sim sim = Sim.getSim();
@@ -106,7 +110,7 @@ public class MainEditorControl {
         return scroller;
     }
 
-    public void setContent() throws FileNotFoundException{
+    public void setContent() throws IOException{
         InputStream background_stream = new FileInputStream("src/main/resources/com/sysedit/background.png");
         Image largeImage = new Image(background_stream);
         ImageView imageView = new ImageView(largeImage);
@@ -118,6 +122,18 @@ public class MainEditorControl {
         Sim sim = Sim.getSim();
         Group the_group = sim.get_the_group();
         Pane mainpane = new Pane(the_group);
+
+        ContextMenu contextmenu = new ContextMenu();
+        MenuItem paste = new MenuItem("Paste");
+        MenuItem newSystemParent = new MenuItem("New System Parent");
+        contextmenu.getItems().addAll(paste, newSystemParent);
+
+        newSystemParent.setOnAction(e-> sim.set_new_parent());
+
+        mainpane.setOnContextMenuRequested(e->{
+                contextmenu.show(imageView, e.getScreenX(), e.getScreenY());
+            }
+        );
 
         StackPane stacky = new StackPane();
         stacky.getChildren().addAll(imageView, mainpane);

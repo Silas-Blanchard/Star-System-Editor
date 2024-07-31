@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.MenuItem?>
+
+<ContextMenu fx:id="contextMenu" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/20.0.1" fx:controller="com.sysedit.BackgroundClickControl">
+    <items>
+        <MenuItem onAction="#newCenter" text="Create New Center"/>
+        <MenuItem onAction="#paste" text="Paste"/>
+    </items>
+</ContextMenu>

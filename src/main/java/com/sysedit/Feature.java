@@ -8,6 +8,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.effect.Light.Point;
 import javafx.scene.input.MouseButton;
 
@@ -44,13 +45,47 @@ public abstract class Feature{
     Sim sim = Sim.getSim();
 
     public Feature(){
-        try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("rightclickcontrol.fxml"));
-            contextmenu = loader.load();
-            controller = loader.getController();
-        } catch (IOException ex){
-            System.out.println("Exception catch placeholder");
-        }
+        // try{
+        //     FXMLLoader loader = new FXMLLoader(getClass().getResource("rightclickcontrol.fxml"));
+        //     contextmenu = loader.load();
+        //     controller = loader.getController();
+        // } catch (IOException ex){
+        //     System.out.println("Exception catch placeholder");
+        // }
+        contextmenu = new ContextMenu();
+        MenuItem editSystem = new MenuItem("Edit System");
+        MenuItem addSatellite = new MenuItem("Add Satellite");
+        MenuItem addRing = new MenuItem("Add Ring");
+        MenuItem addMega = new MenuItem("Add Mega");
+        MenuItem addRingSys = new MenuItem("Add Ring System");
+        MenuItem toggleOrbit = new MenuItem("Toggle Orbit");
+        MenuItem toggleSystem = new MenuItem("Toggle System");
+        MenuItem changeParent = new MenuItem("Change Parent");
+        MenuItem copy = new MenuItem("Copy");
+        MenuItem copyGroup = new MenuItem("Copy Group");
+        MenuItem delete = new MenuItem("Delete");
+
+        editSystem.setOnAction(e-> {
+            try {
+                sim.open_editor(this, false);
+            } catch (IOException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+        });
+        addSatellite.setOnAction(e-> sim.create_satellite(this));
+
+        delete.setOnAction(e-> deleteFeature());
+
+        toggleOrbit.setOnAction(e-> show_orbit = !show_orbit);
+
+        toggleSystem.setOnAction(e-> {      
+            is_expanded = !is_expanded;
+            if(is_expanded){
+                liberate();
+            }});
+
+        contextmenu.getItems().addAll(editSystem, addSatellite, addRing, addMega, addRingSys, toggleOrbit, toggleSystem, changeParent, copy, copyGroup, delete);
     }
 
     public Point2D getShapeLoc(){
@@ -59,29 +94,12 @@ public abstract class Feature{
 
 
     public void planet_right_click(Node ellipse){
-        //opens menu upon right click
-        ellipse.setOnMouseClicked(event -> {
-            if (event.getButton() == MouseButton.SECONDARY && event.isShiftDown()) {
-                try {
-                    sim.open_editor(this, false);
-                } catch (IOException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                }
-            }
-            if (event.getButton() == MouseButton.SECONDARY) {    
-                controller.set_reference(this);
 
-                if(this.is_expanded){
-                    controller.enableAddingSatellites();
-                }
-                if (contextmenu.isShowing()) {
-                    contextmenu.hide();
-                }
-                contextmenu.show(ellipse, event.getScreenX(), event.getScreenY());
-            }
+        ellipse.setOnContextMenuRequested(e -> {
+            contextmenu.show(ellipse, e.getSceneX(), e.getSceneY());
+            e.consume();
         });
-    }
+    };
 
     public void setParent(Feature parent){
         this.parent = parent;

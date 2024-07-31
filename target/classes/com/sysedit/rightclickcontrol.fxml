@@ -14,7 +14,6 @@
         <MenuItem onAction="#toggleSystem" text="Toggle System" />
         <MenuItem onAction="#changeParent" text="Change Parent" />
         <MenuItem onAction="#copy" text="Copy" />
-        <MenuItem onAction="#Paste" text="Paste" />
         <MenuItem onAction="#copyAll" text="Copy Group" />
         <MenuItem onAction="#delete" text="Delete" />
     </items>
