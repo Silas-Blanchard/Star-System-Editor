@@ -18,7 +18,7 @@ public class BackgroundClickControl {
 
     @FXML
     void newCenter(ActionEvent event) {
-        sim.set_new_parent();
+        //sim.set_new_parent();
     }
 
 

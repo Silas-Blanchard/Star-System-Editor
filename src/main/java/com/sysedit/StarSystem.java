@@ -30,9 +30,9 @@ public class StarSystem {
     }
 
     public void render(){
-        for (Feature f: features){
-            f.render();
-        }
+        // for (Feature f: features){
+        //     f.render();
+        // }
     }
 
     public void setup_rendering(Group subsubgroup){

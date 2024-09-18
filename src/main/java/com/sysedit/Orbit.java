@@ -26,7 +26,7 @@ public class Orbit {
     public Double yaw;
     public Double apogee;
     public Double perigee;
-    public World reference;
+    // public World reference;
 
     private Double planet_x;
     private Double planet_y;
@@ -41,47 +41,64 @@ public class Orbit {
     private Group planetMarker;
     private Ellipse orbit_ellipse;
 
-    public OrbitManager orbitManagr;
+    //public OrbitManager orbitManagr;
     public Rectangle orbitManagingButton = new Rectangle(10, 10);
 
-    Orbit(World reference){
-        //defaults
+    public Point2D planetPoint = new Point2D(0,0);
+
+    // Orbit(World reference){
+    //     //defaults
+    //     this.angle = 0.0;
+    //     this.inclination = 0.0;
+    //     this.yaw = 0.0;
+    //     this.apogee = reference.apogee;
+    //     this.perigee = reference.perigee;
+
+    //     this.parent = reference.parent;
+
+    //     reference.system.setup_rendering(form);
+
+    //     rotateTransform = new Rotate(75, 0, 0, 0, Rotate.X_AXIS);
+    //     inclinationTransform = new Rotate(0, 0, 0, 0, Rotate.Y_AXIS);
+    //     yawTransform = new Rotate(0, 0, 0, 0, Rotate.Z_AXIS);
+
+    //     orbitManagr = new OrbitManager(reference, this);
+    // }
+
+    Orbit(){
         this.angle = 0.0;
         this.inclination = 0.0;
         this.yaw = 0.0;
-        this.apogee = reference.apogee;
-        this.perigee = reference.perigee;
-
-        this.reference = reference;
-        this.parent = reference.parent;
-
-        reference.system.setup_rendering(form);
+        this.apogee = 100.0;
+        this.perigee = 100.0;
 
         rotateTransform = new Rotate(75, 0, 0, 0, Rotate.X_AXIS);
         inclinationTransform = new Rotate(0, 0, 0, 0, Rotate.Y_AXIS);
         yawTransform = new Rotate(0, 0, 0, 0, Rotate.Z_AXIS);
-
-        orbitManagr = new OrbitManager(reference, this);
     }
 
-    public void render(){
-        //For some reason it does not agree with moving the planet. Seems to be pushed way to the left and the marker is similarly lost
-        if (reference.show_orbit){
-            form.getChildren().clear();
+    public Group getForm(Circle body){
+        Group g = new Group();
+        
+        //Phase 1, finding the shape of the orbit
+        Ellipse orbit = getOrbit();
+        orbit.setStrokeWidth(2.0);
+        orbit.setStroke(Color.WHITE);
+        orbit.setFill(Color.TRANSPARENT);
+        orbit.setMouseTransparent(true);
 
-            getOrbit();
-            orbit_ellipse.setStrokeWidth(2.0);
-            orbit_ellipse.setStroke(Color.WHITE);
-            orbit_ellipse.setFill(Color.TRANSPARENT);
-            orbit_ellipse.setMouseTransparent(true);
+        //Phase 2, Moving the "body" of our planet to its proper spot
+        Group planetMarker = renderPlanet(orbit, body);
 
-            renderPlanet(orbit_ellipse);
+        body.setTranslateX(planetPoint.getX());
+        body.setTranslateY(planetPoint.getY());
 
-            orbitManagr.setButtonVisible(reference.show_orbit);
-        }
+
+        g.getChildren().addAll(orbit, planetMarker, body);
+        return g;
     }
 
-    private void renderPlanet(Ellipse orbit){
+    private Group renderPlanet(Ellipse orbit, Circle body){
         //All of this takes place in the local coord system of the orbit!
         Double radiusX = orbit.getRadiusX();
         Double radiusY = orbit.getRadiusY();
@@ -108,10 +125,10 @@ public class Orbit {
         planet_x = r * Math.cos(angle);
         planet_y = r * Math.sin(angle);
 
-        Point2D adjustedPoint = orbit.localToParent(planet_x, planet_y);
+        //after all of that, this is just the objective point on the screen
+        this.planetPoint = orbit.localToParent(planet_x, planet_y);
 
-        reference.setShapeOffset(adjustedPoint);
-
+        //making the planet position marker
         Circle point = new Circle();
         point.setRadius(1);
         point.setFill(Color.WHITE);
@@ -122,20 +139,17 @@ public class Orbit {
         outline.setStrokeWidth(1.0);
         outline.setStroke(Color.WHITE);
 
-        
-
         planetMarker = new Group(point, outline);
         
-        planetMarker.setTranslateX(adjustedPoint.getX());
-        planetMarker.setTranslateY(adjustedPoint.getY());
-        
-        form.getChildren().add(planetMarker);
+        planetMarker.setTranslateX(planetPoint.getX());
+        planetMarker.setTranslateY(planetPoint.getY());
 
+        return planetMarker;
     }
 
-    private void getOrbit(){
-        Double a = reference.apogee;
-        Double p = reference.perigee;
+    private Ellipse getOrbit(){
+        Double a = this.apogee;
+        Double p = this.perigee;
 
         Double eccentricity = (a - p) / (a + p);
         Double semimajor = (a + p) / 2;
@@ -150,41 +164,37 @@ public class Orbit {
         // form.setLayoutX(focalLength);
 
         this.orbit_ellipse = orbit;
-        form.getChildren().addAll(orbit_ellipse);
-    }
+        return orbit_ellipse;
+    // }
     
-    public void set_parent(Feature parent){
-        this.parent = parent;
-    }
+    // public void set_parent(Feature parent){
+    //     this.parent = parent;
+    // }
 
-    public void setOrbitDegrees(double degrees){
-        reference.angle = degrees;
-        this.angle = reference.angle;
-        render();
-    }
+    // public void setOrbitDegrees(double degrees){
+    //     reference.angle = degrees;
+    //     this.angle = reference.angle;
+    // }
 
-    public void setSizeProportional(double pixels){
-        double p2aRatio = perigee / apogee;
-        double a2pRatio = apogee / perigee;
-        reference.perigee = pixels * p2aRatio;
-        reference.apogee = pixels * a2pRatio;
-        render();
-    }
+    // public void setSizeProportional(double pixels){
+    //     double p2aRatio = perigee / apogee;
+    //     double a2pRatio = apogee / perigee;
+    //     reference.perigee = pixels * p2aRatio;
+    //     reference.apogee = pixels * a2pRatio;
+    // }
 
-    public void setInclinationDegrees(double degrees){
-        this.inclination = degrees;
-        inclinationTransform = new Rotate(inclination, 0, 0, 0, Rotate.Y_AXIS);
-        render();
-    }
+    // public void setInclinationDegrees(double degrees){
+    //     this.inclination = degrees;
+    //     inclinationTransform = new Rotate(inclination, 0, 0, 0, Rotate.Y_AXIS);
+    // }
 
-    public void setYawDegree(double degrees){
-        this.yaw = degrees;
-        yawTransform = new Rotate(yaw, 0, 0, 0, Rotate.Z_AXIS);
-        render();
-    }
+    // public void setYawDegree(double degrees){
+    //     this.yaw = degrees;
+    //     yawTransform = new Rotate(yaw, 0, 0, 0, Rotate.Z_AXIS);
+    // }
 
-    public Ellipse getOrbitEllipse(){
-        return this.orbit_ellipse;
+    // public Ellipse getOrbitEllipse(){
+    //     return this.orbit_ellipse;
+    // }
     }
-
 }

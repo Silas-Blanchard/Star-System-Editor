@@ -78,7 +78,7 @@ public class EditorController {
             Stage stage = (Stage) cancel.getScene().getWindow();
             stage.close();
         }
-        sim.updateScene();
+        //sim.updateScene();
     }
 
     public void set_values(Feature f){ //sets values for the editor menu

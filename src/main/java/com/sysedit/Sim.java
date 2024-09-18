@@ -22,8 +22,11 @@ public class Sim {
     private Group selection;
     private Group the_group = new Group(); //All shapes are stored in this.
 
-    private Group copied;
-    private World system_parent;
+    private Feature copied;
+    private Feature system_parent;
+
+    public ArrayList<Feature> features = new ArrayList<Feature>();
+
     private String title = "untitled";
     private javafx.scene.control.ScrollPane pane_thats_saved;
 
@@ -72,28 +75,45 @@ public class Sim {
         return the_group;
     }
 
-    public void set_new_parent(){
-        if (system_parent == null){
-            system_parent = new World();
-            system_parent.show_orbit = false;
-            system_parent.is_expanded = true;
-            system_parent.orbit.perigee = 0.0;
-            system_parent.orbit.apogee = 0.0;
-            system_parent.name = "Center";
-            system_parent.setObjectivePoint(origin);
-            system_parent.imbuePositioning(true);
+    public void createNewSystem(){
+        system_parent = new Feature();
+
+        addFeature(system_parent);
+
+        render();
+
+    //     if (system_parent == null){
+    //         system_parent = new World();
+    //         system_parent.show_orbit = false;
+    //         system_parent.is_expanded = true;
+    //         system_parent.orbit.perigee = 0.0;
+    //         system_parent.orbit.apogee = 0.0;
+    //         system_parent.name = "Center";
+    //         system_parent.setObjectivePoint(origin);
+    //         system_parent.imbuePositioning(true);
+    //     }
+    //     else{
+    //         World new_parent = new World();
+    //         new_parent.orbit.perigee = 0.0;
+    //         new_parent.orbit.apogee = 0.0;
+    //         new_parent.show_orbit = false;
+    //         system_parent.setParent(new_parent);
+    //         system_parent = new_parent;
+    //         system_parent.name = "Center";
+    //         system_parent.setObjectivePoint(startPoint);
+    //     }
+    //     updateScene();
+    }
+
+    public void render(){
+        for(Feature f: features){
+            f.render();
         }
-        else{
-            World new_parent = new World();
-            new_parent.orbit.perigee = 0.0;
-            new_parent.orbit.apogee = 0.0;
-            new_parent.show_orbit = false;
-            system_parent.setParent(new_parent);
-            system_parent = new_parent;
-            system_parent.name = "Center";
-            system_parent.setObjectivePoint(startPoint);
-        }
-        updateScene();
+    }
+
+    public void addFeature(Feature f){
+        the_group.getChildren().add(f.getForm());
+        features.add(f);
     }
 
     public void saveAs(){
@@ -131,42 +151,58 @@ public class Sim {
         edit_window.show();
     }
 
-    public void set_copy(Group g){
-        copied = g;
+    public void set_copy(Feature f){
+        copied = f;
     }
 
-    public void paste(){
-        add_node(copied);
-    }
+    // public void paste(){
+    //     // if(this.copied.parent == null){
+    //     //     copied.setParent(system_parent);
+    //     // }
+    //     setSatellite(system_parent, copied);
+    //     add_node(this.copied.form);
+    // }
 
-    public void updateScene(){
-        system_parent.render(); //recursive so it will render everything (
-        // Circle centerMark = new Circle(0.0, 0.0, 1.0);
-        // centerMark.setFill(Color.RED);
-        // add_node(centerMark);
-    }
+    // public void updateScene(){
+    //     system_parent.render(); //recursive so it will render everything (
+    //     // Circle centerMark = new Circle(0.0, 0.0, 1.0);
+    //     // centerMark.setFill(Color.RED);
+    //     // add_node(centerMark);
+    // }
 
-    public void create_satellite(Feature host){
-        World new_world = new World();
-        new_world.orbit.perigee = 100.0;
-        new_world.orbit.apogee = 100.0;
-        new_world.radius = 10.0;
-        new_world.show_orbit = true;
-        new_world.is_expanded = false;
-        new_world.setParent(host);
+    // public void create_satellite(Feature host){
+    //     //adds a new satellite to the system
+    //     World new_world = new World();
+    //     new_world.orbit.perigee = 100.0;
+    //     new_world.orbit.apogee = 100.0;
+    //     new_world.radius = 10.0;
+    //     new_world.show_orbit = true;
+    //     new_world.is_expanded = false;
+    //     new_world.setParent(host);
 
-        new_world.imbuePositioning(false);
+    //     new_world.imbuePositioning(false);
 
-        new_world.render();
-    }
+    //     new_world.render();
+    // }
 
-    public void addNewConnector(Connector c){
-        connectors.add(c);
-    }
+    // public void setSatellite(Feature host, Feature sat){
+    //     //adds an existing feature to the system
+    //     sat.show_name = true;
+    //     sat.show_orbit = true;
+    //     sat.setParent(host);
 
-    public Feature getSystemParent(){
-        return system_parent;
-    }
+    //     sat.imbuePositioning(false);
+
+    //     host.render();
+    // }
+
+    // public void addNewConnector(Connector c){
+    //     connectors.add(c);
+    // }
+
+    // public Feature getSystemParent(){
+    //     return system_parent;
+    // }
 
     public void translateTheGroup(double x, double y){
         the_group.setLayoutX(x);

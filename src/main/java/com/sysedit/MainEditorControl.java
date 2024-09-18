@@ -64,26 +64,17 @@ public class MainEditorControl {
 
     @FXML
     public void createNewSystem(ActionEvent e){
-        sim.set_new_parent();
+        
     }
 
     @FXML
     public void deselect_all(ActionEvent event) {
-        Feature pie = sim.getSystemParent();
-        Point2D pi = pie.getObjectivePoint();
 
-        Group the_group = sim.get_the_group();
-
-        //pie.setObjectivePoint(new Point2D(0, 0));
-        
-        System.out.println(sim.getSystemParent().getObjectivePoint());
-        System.out.println(sim.getSystemParent().form.getLayoutX() + " Layout X");
-        System.out.println(sim.getSystemParent().form.getLayoutY() + " Layout Y");
     }
 
     @FXML
     public void newParent(ActionEvent event) {
-        sim.set_new_parent();
+        sim.createNewSystem();
     }
 
     @FXML
@@ -128,7 +119,7 @@ public class MainEditorControl {
         MenuItem newSystemParent = new MenuItem("New System Parent");
         contextmenu.getItems().addAll(paste, newSystemParent);
 
-        newSystemParent.setOnAction(e-> sim.set_new_parent());
+        //newSystemParent.setOnAction(e-> sim.set_new_parent());
 
         mainpane.setOnContextMenuRequested(e->{
                 contextmenu.show(imageView, e.getScreenX(), e.getScreenY());

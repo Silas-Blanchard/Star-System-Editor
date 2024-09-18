@@ -12,7 +12,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.effect.Light.Point;
 import javafx.scene.input.MouseButton;
 
-public abstract class Feature{
+public class Feature{
     public Feature parent;
     public Orbit orbit;
     public StarSystem system;
@@ -42,9 +42,16 @@ public abstract class Feature{
 
     public Connector connectorIn;
 
+
+    public PrimaryBody primary;
+    public SatelliteBody satellite;
+
     Sim sim = Sim.getSim();
 
     public Feature(){
+        primary = new PrimaryBody();
+        satellite = new SatelliteBody();
+
         // try{
         //     FXMLLoader loader = new FXMLLoader(getClass().getResource("rightclickcontrol.fxml"));
         //     contextmenu = loader.load();
@@ -52,40 +59,49 @@ public abstract class Feature{
         // } catch (IOException ex){
         //     System.out.println("Exception catch placeholder");
         // }
-        contextmenu = new ContextMenu();
-        MenuItem editSystem = new MenuItem("Edit System");
-        MenuItem addSatellite = new MenuItem("Add Satellite");
-        MenuItem addRing = new MenuItem("Add Ring");
-        MenuItem addMega = new MenuItem("Add Mega");
-        MenuItem addRingSys = new MenuItem("Add Ring System");
-        MenuItem toggleOrbit = new MenuItem("Toggle Orbit");
-        MenuItem toggleSystem = new MenuItem("Toggle System");
-        MenuItem changeParent = new MenuItem("Change Parent");
-        MenuItem copy = new MenuItem("Copy");
-        MenuItem copyGroup = new MenuItem("Copy Group");
-        MenuItem delete = new MenuItem("Delete");
+        // contextmenu = new ContextMenu();
+        // MenuItem editSystem = new MenuItem("Edit System");
+        // MenuItem addSatellite = new MenuItem("Add Satellite");
+        // MenuItem addRing = new MenuItem("Add Ring");
+        // MenuItem addMega = new MenuItem("Add Mega");
+        // MenuItem addRingSys = new MenuItem("Add Ring System");
+        // MenuItem toggleOrbit = new MenuItem("Toggle Orbit");
+        // MenuItem toggleSystem = new MenuItem("Toggle System");
+        // MenuItem changeParent = new MenuItem("Change Parent");
+        // MenuItem copy = new MenuItem("Copy");
+        // MenuItem copyGroup = new MenuItem("Copy Group");
+        // MenuItem delete = new MenuItem("Delete");
 
-        editSystem.setOnAction(e-> {
-            try {
-                sim.open_editor(this, false);
-            } catch (IOException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            }
-        });
-        addSatellite.setOnAction(e-> sim.create_satellite(this));
+        // editSystem.setOnAction(e-> {
+        //     try {
+        //         sim.open_editor(this, false);
+        //     } catch (IOException e1) {
+        //         // TODO Auto-generated catch block
+        //         e1.printStackTrace();
+        //     }
+        // });
+        // //addSatellite.setOnAction(e-> sim.create_satellite(this));
 
-        delete.setOnAction(e-> deleteFeature());
+        // delete.setOnAction(e-> deleteFeature());
 
-        toggleOrbit.setOnAction(e-> show_orbit = !show_orbit);
+        // toggleOrbit.setOnAction(e-> show_orbit = !show_orbit);
 
-        toggleSystem.setOnAction(e-> {      
-            is_expanded = !is_expanded;
-            if(is_expanded){
-                liberate();
-            }});
+        // toggleSystem.setOnAction(e-> {      
+        //     is_expanded = !is_expanded;
+        //     if(is_expanded){
+        //         liberate();
+        //     }});
 
-        contextmenu.getItems().addAll(editSystem, addSatellite, addRing, addMega, addRingSys, toggleOrbit, toggleSystem, changeParent, copy, copyGroup, delete);
+        // contextmenu.getItems().addAll(editSystem, addSatellite, addRing, addMega, addRingSys, toggleOrbit, toggleSystem, changeParent, copy, copyGroup, delete);
+    }
+
+    public Group getForm(){
+        return this.form;
+    }
+
+    public void render(){
+        this.form.getChildren().clear();
+        this.form.getChildren().addAll(primary.getForm(), satellite.getForm());
     }
 
     public Point2D getShapeLoc(){
@@ -101,24 +117,24 @@ public abstract class Feature{
         });
     };
 
-    public void setParent(Feature parent){
-        this.parent = parent;
-        this.orbit.set_parent(parent);
-        this.orbit.angle = this.angle;
-        this.system.set_parent(parent);
+    // public void setParent(Feature parent){
+    //     this.parent = parent;
+    //     this.orbit.set_parent(parent);
+    //     this.orbit.angle = this.angle;
+    //     this.system.set_parent(parent);
 
-        parent.system.add_feature(this);
+    //     parent.system.add_feature(this);
 
-        objectivePoint = parent.objectivePoint;
+    //     objectivePoint = parent.objectivePoint;
 
-        //setObjectivePoint(parent.getObjectivePoint());
-    }
+    //     //setObjectivePoint(parent.getObjectivePoint());
+    // }
 
     public Point2D getShapeOffset(){
         return shapeOffset;
     }
 
-    public abstract void setShapeOffset(Point2D p);
+    // public abstract void setShapeOffset(Point2D p);
 
     public Point2D getObjectivePoint(){
         return objectivePoint;
@@ -128,21 +144,21 @@ public abstract class Feature{
         return new Point2D(p.getX() + q.getX(), p.getY() + q.getY());
     }
 
-    abstract public Point2D getCenterPoint(); 
+    // abstract public Point2D getCenterPoint(); 
 
-    abstract public void imbuePositioning(Boolean b);
+    // abstract public void imbuePositioning(Boolean b);
 
-    abstract void liberate(); //frees a given object from its parent. Simple as
+    // abstract void liberate(); //frees a given object from its parent. Simple as
 
-    abstract public void setObjectivePoint(Point2D p);
+    // abstract public void setObjectivePoint(Point2D p);
 
-    abstract public void deltaObjPoint(Point2D p);
+    // abstract public void deltaObjPoint(Point2D p);
 
-    abstract void render(); //recursive! Updates the form of all features in the system
+    // abstract void render(); //recursive! Updates the form of all features in the system
 
-    abstract Feature getCopy(boolean makeDeepCopy); //optionally recursive (: if lame and not recursive it just spits out a regular copy of just itself
+    // abstract Feature getCopy(boolean makeDeepCopy); //optionally recursive (: if lame and not recursive it just spits out a regular copy of just itself
 
-    abstract void deleteFeature();
+    // abstract void deleteFeature();
 
-    abstract Feature cutFeature();
+    // abstract Feature cutFeature();
 }
