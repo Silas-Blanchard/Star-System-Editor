@@ -1,6 +1,7 @@
 package com.sysedit;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
@@ -20,6 +21,8 @@ public class Feature{
     public boolean is_expanded = false;
     public boolean show_orbit = true;
     public boolean show_name = true;
+    public boolean showSatelliteForm = false;
+    public boolean showPrimaryForm = false;
 
     private int shininess;
 
@@ -46,11 +49,14 @@ public class Feature{
     public PrimaryBody primary;
     public SatelliteBody satellite;
 
+    public ArrayList<Feature> children;
+
     Sim sim = Sim.getSim();
 
     public Feature(){
-        primary = new PrimaryBody();
-        satellite = new SatelliteBody();
+        primary = new PrimaryBody(this);
+        satellite = new SatelliteBody(this);
+        children = new ArrayList<Feature>();
 
         // try{
         //     FXMLLoader loader = new FXMLLoader(getClass().getResource("rightclickcontrol.fxml"));
@@ -99,9 +105,44 @@ public class Feature{
         return this.form;
     }
 
+    public Group getPrimaryForm(){
+        return primary.getForm();
+    }
+
+    public Group getSatelliteForm(){
+        return satellite.getForm();
+    }
+
     public void render(){
-        this.form.getChildren().clear();
-        this.form.getChildren().addAll(primary.getForm(), satellite.getForm());
+        if(showSatelliteForm){
+            satellite.render();
+        }else{
+            satellite.form.getChildren().clear();
+        }
+
+        if(showPrimaryForm){
+            primary.render();
+        }else{
+            primary.form.getChildren().clear();
+        }
+    }
+
+    public void addSatellite(Feature f){
+        this.children.add(f);
+        this.primary.form.getChildren().add(f.getSatelliteForm());
+    }
+
+    public void removeSatellite(Feature f){
+        this.children.remove(f);
+        this.primary.form.getChildren().remove(f.getSatelliteForm());
+    }
+
+    public void setParent(Feature f){
+        parent = f;
+    }
+
+    public Orbit getSatelliteFormOrbit(){
+        return satellite.orbit;
     }
 
     public Point2D getShapeLoc(){

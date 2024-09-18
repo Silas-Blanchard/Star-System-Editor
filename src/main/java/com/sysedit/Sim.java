@@ -76,12 +76,21 @@ public class Sim {
     }
 
     public void createNewSystem(){
-        system_parent = new Feature();
+        system_parent = createFeature();
+        system_parent.showPrimaryForm = true;
 
-        addFeature(system_parent);
+        Feature sat = createFeature();
+
+        assignSatellite(system_parent, sat);
 
         render();
 
+        Orbit o = sat.getSatelliteFormOrbit();
+        o.apogee = 200.0;
+        o.perigee = 200.0;
+
+        render();
+    }
     //     if (system_parent == null){
     //         system_parent = new World();
     //         system_parent.show_orbit = false;
@@ -103,7 +112,6 @@ public class Sim {
     //         system_parent.setObjectivePoint(startPoint);
     //     }
     //     updateScene();
-    }
 
     public void render(){
         for(Feature f: features){
@@ -170,20 +178,40 @@ public class Sim {
     //     // add_node(centerMark);
     // }
 
-    // public void create_satellite(Feature host){
-    //     //adds a new satellite to the system
-    //     World new_world = new World();
-    //     new_world.orbit.perigee = 100.0;
-    //     new_world.orbit.apogee = 100.0;
-    //     new_world.radius = 10.0;
-    //     new_world.show_orbit = true;
-    //     new_world.is_expanded = false;
-    //     new_world.setParent(host);
+    public void assignSatellite(Feature host, Feature sat){
+        //Lets everyone know their role, the host keeps track of its new sat, and sat knows about its host
+        host.addSatellite(sat);
+        sat.setParent(host);
+        sat.showPrimaryForm = false;
+        sat.showSatelliteForm = true;
+    }
 
-    //     new_world.imbuePositioning(false);
+    public void removeSatellite(Feature host, Feature sat){
+        host.removeSatellite(sat);
+        sat.setParent(null);
+    }
 
-    //     new_world.render();
-    // }
+    public Feature createFeature(){
+        //adds feature's form to the scene and to the list
+        Feature f = new Feature();
+        features.add(f);
+        the_group.getChildren().add(f.getPrimaryForm());
+        return f;
+    }
+
+    public void deleteFeature(Feature toBeDeleted){
+        for(Feature f: toBeDeleted.children){
+            deleteFeature(f);
+        }
+        features.remove(toBeDeleted);
+        
+        if(toBeDeleted.parent != null){ //a feature's form is either stored in its parents group or in the feature
+            toBeDeleted.parent.removeSatellite(toBeDeleted);
+            toBeDeleted.parent.form.getChildren().remove(toBeDeleted.form);
+        }else{
+            the_group.getChildren().remove(toBeDeleted.getForm());
+        }
+    }
 
     // public void setSatellite(Feature host, Feature sat){
     //     //adds an existing feature to the system

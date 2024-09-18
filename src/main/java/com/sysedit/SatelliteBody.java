@@ -3,25 +3,38 @@ package com.sysedit;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Ellipse;
 
 public class SatelliteBody {
     Group form;
     Orbit orbit;
-    Circle body;
+    Circle shape;
+    Feature reference;
+    Group orbitGroup;
 
-    public SatelliteBody(){
+    public SatelliteBody(Feature f){
+        reference = f;
         orbit = new Orbit();
-        body = new Circle(10);
-        body.setFill(Color.WHITE);
+        shape = new Circle(10);
+
+        form = new Group();
+        orbitGroup = new Group();
+        form.getChildren().add(orbitGroup);
+
+        shape.setFill(Color.WHITE);
+    }
+
+    public void render(){
+        form.getChildren().remove(orbitGroup);
+        orbitGroup = orbit.getForm(shape);
+        form.getChildren().add(orbitGroup);
     }
 
     public Group getForm(){
-        Group g = new Group();
-        g.getChildren().add(orbit.getForm(body));
-        return g;
+        return form;
     }
 
     public void setBodyAsPlanet(Double radius){
-        body = new Circle(radius);
+        shape = new Circle(radius);
     }
 }
