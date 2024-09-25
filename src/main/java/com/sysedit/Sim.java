@@ -77,7 +77,7 @@ public class Sim {
 
     public void createNewSystem(){
         system_parent = createFeature();
-        system_parent.showPrimaryForm = true;
+        system_parent.setPrimaryVisiblity(true);
 
         Feature sat = createFeature();
 
@@ -90,7 +90,32 @@ public class Sim {
         o.perigee = 200.0;
 
         render();
+
+        Feature sat2 = createFeature();
+
+        assignSatellite(system_parent, sat2);
+
+        render();
+
+        liberateSatellite(sat);
+
+        sat.name = "pie";
+
+        render();
+
+        Feature sat12 = createFeature();
+
+        assignSatellite(sat, sat12);
+
+        render();
+
+        liberateSatellite(sat12);
+
+        render();
     }
+    //longitude of the ascending node is how "rotated" the orbit is
+    //mean anomaly is how far along the revolution the body is.  the mean anomaly is the fraction of an elliptical orbit's period that has elapsed since the orbiting body passed periapsis, expressed as an angle
+
     //     if (system_parent == null){
     //         system_parent = new World();
     //         system_parent.show_orbit = false;
@@ -179,6 +204,9 @@ public class Sim {
     // }
 
     public void assignSatellite(Feature host, Feature sat){
+        if(sat.parent != null){
+            removeSatellite(sat.parent, sat);
+        }
         //Lets everyone know their role, the host keeps track of its new sat, and sat knows about its host
         host.addSatellite(sat);
         sat.setParent(host);
@@ -195,7 +223,7 @@ public class Sim {
         //adds feature's form to the scene and to the list
         Feature f = new Feature();
         features.add(f);
-        the_group.getChildren().add(f.getPrimaryForm());
+        the_group.getChildren().addAll(f.getPrimaryForm());
         return f;
     }
 
@@ -211,6 +239,17 @@ public class Sim {
         }else{
             the_group.getChildren().remove(toBeDeleted.getForm());
         }
+
+        if(the_group.getChildren().contains(toBeDeleted.connectorIn.line)){
+            the_group.getChildren().remove(toBeDeleted.connectorIn.line);
+        }
+    }
+
+    public void liberateSatellite(Feature toBeLiberated){
+        toBeLiberated.setPrimaryVisiblity(true);
+        toBeLiberated.setSatelliteVisiblity(false);
+        toBeLiberated.showConnector = true;
+        the_group.getChildren().add(toBeLiberated.connectorIn.line);
     }
 
     // public void setSatellite(Feature host, Feature sat){

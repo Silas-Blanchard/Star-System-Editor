@@ -22,13 +22,32 @@ public class PrimaryBody {
 
         form = new Group();
         form.getChildren().add(shape);
+
+        hidePrimary();
     }
 
     public Group getForm(){
         return form;
     }
 
+    public void showPrimary(){
+        if(!form.getChildren().contains(shape)){
+            form.getChildren().add(shape);
+        }
+    }
+
+    public void hidePrimary(){
+        if(form.getChildren().contains(shape)){
+            form.getChildren().remove(shape);
+        }
+    }
+
     public void render(){
         shape.setFill(Color.WHITE);
+    }
+
+    public void deltaPosition(Point2D p){
+        form.setTranslateX(form.getTranslateX() + p.getX());
+        form.setTranslateY(form.getTranslateY() + p.getY());
     }
 }

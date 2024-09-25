@@ -22,6 +22,10 @@ public class PlanetPositioner {
     Point2D startObjPoint;
 
     PrimaryBody reference;
+    Feature referenceHolder;
+    Feature parent;
+
+    Connector connector;
 
     Boolean isDragging = false; //keeps track of if positioner is currently being dragged. Important for limiting onMouseReleased
 
@@ -32,6 +36,11 @@ public class PlanetPositioner {
     public PlanetPositioner (Circle ell, PrimaryBody reference, Boolean isDraggable){
         this.handle = ell;
         this.reference = reference;
+
+        referenceHolder = reference.reference;
+        this.parent = referenceHolder.parent;
+
+
 
         Sim sim = Sim.getSim();
         if(isDraggable){
@@ -60,20 +69,25 @@ public class PlanetPositioner {
             reference.form.setTranslateY(prevY + deltaY);
 
             //below is the logic for the connector class stored in reference.connectorIn
-            Point2D movedBy = new Point2D(reference.form.getTranslateX(), reference.form.getTranslateY());
+            if(referenceHolder.showConnector){
+                Connector c = referenceHolder.connectorIn;
+                Point2D p1 = referenceHolder.parent.getTranslation();
+                Point2D p2 = referenceHolder.satellite.getMarkerPosition();
+                c.setStart(new Point2D(p1.getX() + p2.getX(), p1.getY() + p2.getY()));
+                c.setEnd(new Point2D(prevX + deltaX, prevY + deltaY));
+                c.render();
+            }
 
-            // for(Feature f:reference.children){
-            //     if(f.is_expanded){
-            //         Point2D offset = f.getShapeOffset();
-            //         Point2D currentPoint = new Point2D(movedBy.getX() + offset.getX(), movedBy.getY() + offset.getY());
-            //         //f.connectorIn.setStart(currentPoint);
-            //         //f.connectorIn.render();
-            //     }
-            // }
-
-            //reference.connectorIn.setEnd(new Point2D(movedBy.getX() + reference.form.getTranslateX(), movedBy.getY() + reference.form.getTranslateY()));
-
-            //reference.connectorIn.render();
+            for(Feature f: referenceHolder.children){
+                if(f.showConnector){
+                    Connector c = f.connectorIn;
+                    Point2D p1 = f.parent.getTranslation();
+                    Point2D p2 = f.satellite.getMarkerPosition();
+                    c.setStart(new Point2D(p1.getX() + p2.getX(), p1.getY() + p2.getY()));
+                    c.setEnd(new Point2D(f.getTranslation().getX(), f.getTranslation().getY()));
+                    c.render();
+                }
+            }
 
             e.consume();
         });

@@ -21,8 +21,9 @@ public class Feature{
     public boolean is_expanded = false;
     public boolean show_orbit = true;
     public boolean show_name = true;
-    public boolean showSatelliteForm = false;
+    public boolean showSatelliteForm = true;
     public boolean showPrimaryForm = false;
+    public boolean showConnector = false;
 
     private int shininess;
 
@@ -57,6 +58,8 @@ public class Feature{
         primary = new PrimaryBody(this);
         satellite = new SatelliteBody(this);
         children = new ArrayList<Feature>();
+        connectorIn = new Connector(this);
+        //primary.form.getChildren().add(connectorIn.line);
 
         // try{
         //     FXMLLoader loader = new FXMLLoader(getClass().getResource("rightclickcontrol.fxml"));
@@ -116,14 +119,10 @@ public class Feature{
     public void render(){
         if(showSatelliteForm){
             satellite.render();
-        }else{
-            satellite.form.getChildren().clear();
         }
 
         if(showPrimaryForm){
             primary.render();
-        }else{
-            primary.form.getChildren().clear();
         }
     }
 
@@ -139,6 +138,36 @@ public class Feature{
 
     public void setParent(Feature f){
         parent = f;
+    }
+
+    public void setPrimaryVisiblity(boolean b){
+        showPrimaryForm = b;
+        if(b){
+            primary.showPrimary();
+        }else{
+            primary.hidePrimary();
+        }
+
+        if(parent != null){ //these methods get the parent's position and then slaps it with its orbit's position
+            primary.deltaPosition(parent.getTranslation());
+            primary.deltaPosition(satellite.getMarkerPosition());
+        }
+    }
+
+    public Point2D getTranslation(){
+        double x = primary.getForm().getTranslateX();
+        double y = primary.getForm().getTranslateY();
+
+        return new Point2D(x, y);
+    }
+
+    public void setSatelliteVisiblity(boolean b){
+        showSatelliteForm = b;
+        if(b){
+            satellite.showPlanet();
+        }else{
+            satellite.hidePlanet();
+        }
     }
 
     public Orbit getSatelliteFormOrbit(){

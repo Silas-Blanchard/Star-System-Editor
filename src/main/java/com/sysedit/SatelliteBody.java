@@ -1,5 +1,6 @@
 package com.sysedit;
 
+import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -36,5 +37,22 @@ public class SatelliteBody {
 
     public void setBodyAsPlanet(Double radius){
         shape = new Circle(radius);
+    }
+
+    public void hidePlanet(){
+        if(orbitGroup.getChildren().contains(shape)){
+            orbitGroup.getChildren().remove(shape);
+        }
+    }
+
+    public void showPlanet(){
+        if(!orbitGroup.getChildren().contains(shape)){
+            orbitGroup.getChildren().add(shape);
+        }
+    }
+
+    public Point2D getMarkerPosition(){
+        //this is relative to the primary form of the parent
+        return orbit.planetPoint;
     }
 }
