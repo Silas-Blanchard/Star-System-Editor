@@ -12,6 +12,9 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.effect.Light.Point;
 import javafx.scene.input.MouseButton;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
 public class Feature{
     public Feature parent;
@@ -59,6 +62,8 @@ public class Feature{
         satellite = new SatelliteBody(this);
         children = new ArrayList<Feature>();
         connectorIn = new Connector(this);
+
+        setName("wa");
         //primary.form.getChildren().add(connectorIn.line);
 
         // try{
@@ -138,6 +143,16 @@ public class Feature{
 
     public void setParent(Feature f){
         parent = f;
+        primary.nameLabel.setVisible(false);
+        satellite.satelliteNameLabel.setVisible(true);
+    }
+
+    public void liberate(){//gotta be called or it doesn't know it's liberated
+        setPrimaryVisiblity(true);
+        setSatelliteVisiblity(false);
+        showConnector = true;
+        satellite.satelliteNameLabel.setVisible(false);
+        primary.nameLabel.setVisible(true);
     }
 
     public void setPrimaryVisiblity(boolean b){
@@ -186,6 +201,17 @@ public class Feature{
             e.consume();
         });
     };
+
+    public void setName(String name){
+        Text t = primary.nameLabel;
+        t.setFont(new Font(20));
+        t.setText("First row\nSecond row");
+        t.setFill(Color.WHITE);
+    }
+
+    public void setTextVisibility(Boolean b){
+        primary.nameLabel.setVisible(b);
+    }
 
     // public void setParent(Feature parent){
     //     this.parent = parent;

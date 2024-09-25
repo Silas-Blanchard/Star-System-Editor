@@ -6,6 +6,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 
 public class PrimaryBody {
     public ArrayList<SatelliteBody> satellites;
@@ -15,13 +16,18 @@ public class PrimaryBody {
 
     public Point2D objectivePoint;
 
+    public Text nameLabel;
+
     public PrimaryBody(Feature f){
         satellites = new ArrayList<SatelliteBody>();
         this.reference = f;
         PlanetPositioner pos = new PlanetPositioner(shape, this, true);
 
+        nameLabel = new Text();
+
         form = new Group();
-        form.getChildren().add(shape);
+        form.getChildren().addAll(shape, nameLabel);
+        DragImbuer d = new DragImbuer(nameLabel);
 
         hidePrimary();
     }

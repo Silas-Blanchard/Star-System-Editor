@@ -246,10 +246,8 @@ public class Sim {
     }
 
     public void liberateSatellite(Feature toBeLiberated){
-        toBeLiberated.setPrimaryVisiblity(true);
-        toBeLiberated.setSatelliteVisiblity(false);
-        toBeLiberated.showConnector = true;
         the_group.getChildren().add(toBeLiberated.connectorIn.line);
+        toBeLiberated.liberate();
     }
 
     // public void setSatellite(Feature host, Feature sat){

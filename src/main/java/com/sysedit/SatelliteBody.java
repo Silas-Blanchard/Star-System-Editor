@@ -5,6 +5,7 @@ import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Ellipse;
+import javafx.scene.text.Text;
 
 public class SatelliteBody {
     Group form;
@@ -12,6 +13,7 @@ public class SatelliteBody {
     Circle shape;
     Feature reference;
     Group orbitGroup;
+    Text satelliteNameLabel;
 
     public SatelliteBody(Feature f){
         reference = f;
@@ -20,7 +22,12 @@ public class SatelliteBody {
 
         form = new Group();
         orbitGroup = new Group();
-        form.getChildren().add(orbitGroup);
+        
+        satelliteNameLabel = new Text();
+        satelliteNameLabel.setVisible(false);
+        DragImbuer d = new DragImbuer(satelliteNameLabel);
+
+        form.getChildren().addAll(orbitGroup, satelliteNameLabel);
 
         shape.setFill(Color.WHITE);
     }
