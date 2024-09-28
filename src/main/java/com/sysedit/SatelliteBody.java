@@ -24,7 +24,7 @@ public class SatelliteBody {
         orbitGroup = new Group();
         
         satelliteNameLabel = new Text();
-        satelliteNameLabel.setVisible(false);
+        satelliteNameLabel.setVisible(true);
         DragImbuer d = new DragImbuer(satelliteNameLabel);
 
         form.getChildren().addAll(orbitGroup, satelliteNameLabel);

@@ -54,6 +54,7 @@ public class Feature{
     public SatelliteBody satellite;
 
     public ArrayList<Feature> children;
+    public ArrayList<Ring> belts;
 
     Sim sim = Sim.getSim();
 
@@ -61,9 +62,10 @@ public class Feature{
         primary = new PrimaryBody(this);
         satellite = new SatelliteBody(this);
         children = new ArrayList<Feature>();
+        belts = new ArrayList<Ring>();
         connectorIn = new Connector(this);
 
-        setName("wa");
+        setLabelParams(name, 20);
         //primary.form.getChildren().add(connectorIn.line);
 
         // try{
@@ -202,10 +204,15 @@ public class Feature{
         });
     };
 
-    public void setName(String name){
+    public void setLabelParams(String name, double fontSize){
         Text t = primary.nameLabel;
-        t.setFont(new Font(20));
-        t.setText("First row\nSecond row");
+        t.setFont(new Font(fontSize));
+        t.setText(name);
+        t.setFill(Color.WHITE);
+
+        t = satellite.satelliteNameLabel;
+        t.setFont(new Font(fontSize));
+        t.setText(name);
         t.setFill(Color.WHITE);
     }
 
