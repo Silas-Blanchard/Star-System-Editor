@@ -28,6 +28,7 @@ public class PrimaryBody {
         form = new Group();
         form.getChildren().addAll(shape, nameLabel);
         DragImbuer d = new DragImbuer(nameLabel);
+        shape.setFill(Color.WHITE);
 
         hidePrimary();
     }
@@ -48,8 +49,13 @@ public class PrimaryBody {
         }
     }
 
+    public void setColorBlack(){
+        shape.setFill(Color.BLACK);
+        shape.setViewOrder(1.0);
+    }
+
     public void render(){
-        shape.setFill(Color.WHITE);
+
     }
 
     public void deltaPosition(Point2D p){

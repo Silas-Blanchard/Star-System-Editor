@@ -77,7 +77,7 @@ public class Orbit {
         yawTransform = new Rotate(0, 0, 0, 0, Rotate.Z_AXIS);
     }
 
-    public Group getForm(Circle body){
+    public Group getForm(Node body){
         Group g = new Group();
         
         //Phase 1, finding the shape of the orbit
@@ -98,7 +98,7 @@ public class Orbit {
         return g;
     }
 
-    private Group renderPlanet(Ellipse orbit, Circle body){
+    private Group renderPlanet(Ellipse orbit, Node body){
         //All of this takes place in the local coord system of the orbit!
         Double radiusX = orbit.getRadiusX();
         Double radiusY = orbit.getRadiusY();

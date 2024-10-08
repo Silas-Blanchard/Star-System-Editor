@@ -13,6 +13,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.effect.Light.Point;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -27,6 +28,7 @@ public class Feature{
     public boolean showSatelliteForm = true;
     public boolean showPrimaryForm = false;
     public boolean showConnector = false;
+    public boolean isAltForm = false;
 
     private int shininess;
 
@@ -48,13 +50,15 @@ public class Feature{
     public Point2D objectivePoint;
 
     public Connector connectorIn;
-
+    public Group altform = new Group();
 
     public PrimaryBody primary;
     public SatelliteBody satellite;
 
     public ArrayList<Feature> children;
     public ArrayList<Ring> belts;
+
+
 
     Sim sim = Sim.getSim();
 
@@ -64,8 +68,13 @@ public class Feature{
         children = new ArrayList<Feature>();
         belts = new ArrayList<Ring>();
         connectorIn = new Connector(this);
+        form.getChildren().add(altform);
 
         setLabelParams(name, 20);
+
+        Line line1 = new Line(-5,0,5,0);
+        Line line2 = new Line(0,-5,0,5);
+        form.getChildren().addAll(line1, line2);
         //primary.form.getChildren().add(connectorIn.line);
 
         // try{
@@ -218,6 +227,25 @@ public class Feature{
 
     public void setTextVisibility(Boolean b){
         primary.nameLabel.setVisible(b);
+    }
+
+    public void setBarycenter(Boolean b){
+        //makes the feature into a barycenter
+        if(b){
+            showPrimaryForm = false;
+            showSatelliteForm = true;
+            satellite.hidePlanet();
+            primary.setColorBlack();
+        }else{
+            satellite.showPlanet();
+            primary.hidePrimary();
+        }
+        isAltForm = b;
+    }
+
+    public void setApoAndPeri(Double apogee, Double perigee){
+        satellite.orbit.apogee = apogee;
+        satellite.orbit.perigee = perigee;
     }
 
     // public void setParent(Feature parent){

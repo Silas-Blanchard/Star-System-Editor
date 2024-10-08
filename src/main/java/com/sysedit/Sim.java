@@ -112,8 +112,14 @@ public class Sim {
         liberateSatellite(sat12);
 
         render();
+        Feature bary = createBarycenter();
+        bary.setApoAndPeri(250.0, 250.0);
+        render();
+        assignSatellite(sat12, bary);
 
         Ring satRing = createRing(system_parent);
+
+        render();
     }
     //longitude of the ascending node is how "rotated" the orbit is
     //mean anomaly is how far along the revolution the body is.  the mean anomaly is the fraction of an elliptical orbit's period that has elapsed since the orbiting body passed periapsis, expressed as an angle
@@ -212,8 +218,12 @@ public class Sim {
         //Lets everyone know their role, the host keeps track of its new sat, and sat knows about its host
         host.addSatellite(sat);
         sat.setParent(host);
-        sat.showPrimaryForm = false;
-        sat.showSatelliteForm = true;
+        if(!sat.isAltForm){ //altform is basically "if this thing is a barycenter, you gotta liberate it"
+            sat.showPrimaryForm = false;
+            sat.showSatelliteForm = true;
+        }else{
+            liberateSatellite(sat);
+        }
     }
 
     public void removeSatellite(Feature host, Feature sat){
@@ -261,6 +271,21 @@ public class Sim {
         f.belts.add(r);
         f.getPrimaryForm().getChildren().add(r.form);
         return r;
+    }
+
+    public Feature createBarycenter(){
+        Feature bary = createFeature();
+        bary.setBarycenter(true);
+        Feature sat1 = createFeature();
+        Feature sat2 = createFeature();
+        sat1.satellite.orbit.apogee = 50.0;
+        sat1.satellite.orbit.perigee = 25.0;
+        sat2.satellite.orbit.apogee = 25.0;
+        sat2.satellite.orbit.perigee = 50.0;
+        sat2.satellite.orbit.angle = 180.0;
+        assignSatellite(bary, sat1);
+        assignSatellite(bary, sat2);
+        return bary;
     }
 
     // public void setSatellite(Feature host, Feature sat){
