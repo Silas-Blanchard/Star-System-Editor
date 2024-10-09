@@ -41,27 +41,27 @@ public class StarSystem {
         subgroup.getChildren().add(subsubgroup);
     }
 
-    public void remove_rendering(Feature f){
-        objects.remove(f.form);
-    }
+    // public void remove_rendering(Feature f){
+    //     objects.remove(f.form);
+    // }
 
-    public void remove_system(){
-        sim.get_the_group().getChildren().remove(subgroup);
-    }
+    // public void remove_system(){
+    //     sim.get_the_group().getChildren().remove(subgroup);
+    // }
 
-    public void set_parent(Feature newParent){
-        for (Node n : objects){
-            newParent.system.objects.add(n);
-            newParent.system.subgroup.getChildren().add(n);
-        }
-    }
+    // public void set_parent(Feature newParent){
+    //     for (Node n : objects){
+    //         newParent.system.objects.add(n);
+    //         newParent.system.subgroup.getChildren().add(n);
+    //     }
+    // }
 
-    public void addRendering(Feature f){
-        objects.add(f.form);
-        subgroup.getChildren().add(f.form);
-    }
+    // public void addRendering(Feature f){
+    //     objects.add(f.form);
+    //     subgroup.getChildren().add(f.form);
+    // }
 
-    public void deleteFeatureRendering(){
-        sim.remove_node(subgroup);
-    }
+    // public void deleteFeatureRendering(){
+    //     sim.remove_node(subgroup);
+    // }
 }

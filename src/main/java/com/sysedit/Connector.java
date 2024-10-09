@@ -22,10 +22,10 @@ public class Connector {
         reference = f;
     }
 
-    public void getPoints(){
-        start = reference.getObjectivePoint();
-        end = reference.getShapeLoc();
-    }
+    // public void getPoints(){
+    //     start = reference.getObjectivePoint();
+    //     end = reference.getShapeLoc();
+    // }
 
     public void render(){
         line.setStartX(start.getX());

@@ -18,7 +18,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class Feature{
-    public Feature parent;
+    public Feature parent = null;
     public Orbit orbit;
     public StarSystem system;
 
@@ -43,8 +43,6 @@ public class Feature{
     private ContextMenu contextmenu;
     private Rightclickcontrol controller;
 
-    public Group form = new Group(); //this is the form the feature takes.
-
     public Point2D shapeOffset = new Point2D(0, 0);
 
     public Point2D objectivePoint;
@@ -68,13 +66,10 @@ public class Feature{
         children = new ArrayList<Feature>();
         belts = new ArrayList<Ring>();
         connectorIn = new Connector(this);
-        form.getChildren().add(altform);
 
         setLabelParams(name, 20);
 
-        Line line1 = new Line(-5,0,5,0);
-        Line line2 = new Line(0,-5,0,5);
-        form.getChildren().addAll(line1, line2);
+
         //primary.form.getChildren().add(connectorIn.line);
 
         // try{
@@ -120,10 +115,6 @@ public class Feature{
         // contextmenu.getItems().addAll(editSystem, addSatellite, addRing, addMega, addRingSys, toggleOrbit, toggleSystem, changeParent, copy, copyGroup, delete);
     }
 
-    public Group getForm(){
-        return this.form;
-    }
-
     public Group getPrimaryForm(){
         return primary.getForm();
     }
@@ -139,6 +130,10 @@ public class Feature{
 
         if(showPrimaryForm){
             primary.render();
+        }
+
+        if(parent == null){
+            this.primary.crosshair.setVisible(false);
         }
     }
 
@@ -200,10 +195,6 @@ public class Feature{
         return satellite.orbit;
     }
 
-    public Point2D getShapeLoc(){
-        return form.localToParent(shapeOffset);
-    }
-
 
     public void planet_right_click(Node ellipse){
 
@@ -223,6 +214,12 @@ public class Feature{
         t.setFont(new Font(fontSize));
         t.setText(name);
         t.setFill(Color.WHITE);
+
+        double width = t.getLayoutBounds().getWidth();
+        t.setTranslateX(satellite.getMarkerPosition().getX() - width / 2);
+        System.out.println(satellite.getMarkerPosition());
+        System.out.println(satellite.orbit.planetPoint);
+        t.setTranslateY(-1 * radius - 10 + satellite.getMarkerPosition().getY());
     }
 
     public void setTextVisibility(Boolean b){
@@ -236,9 +233,12 @@ public class Feature{
             showSatelliteForm = true;
             satellite.hidePlanet();
             primary.setColorBlack();
+            primary.nameLabel.setVisible(false);
+            satellite.satelliteNameLabel.setVisible(false);
         }else{
             satellite.showPlanet();
             primary.hidePrimary();
+            show_name = true;
         }
         isAltForm = b;
     }

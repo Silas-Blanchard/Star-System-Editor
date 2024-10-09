@@ -34,12 +34,7 @@ public class SatelliteBody {
 
     public void render(){
         form.getChildren().remove(orbitGroup);
-        if(reference.isAltForm){
-            orbitGroup = orbit.getForm(reference.altform);
-        }else{
-            orbitGroup = orbit.getForm(shape);
-        }
-
+        orbitGroup = orbit.getForm(shape);
         form.getChildren().add(orbitGroup);
     }
 

@@ -79,6 +79,7 @@ public class Sim {
         system_parent = createFeature();
         system_parent.setPrimaryVisiblity(true);
 
+
         Feature sat = createFeature();
 
         assignSatellite(system_parent, sat);
@@ -120,6 +121,9 @@ public class Sim {
         Ring satRing = createRing(system_parent);
 
         render();
+
+
+        System.out.println(bary.parent);
     }
     //longitude of the ascending node is how "rotated" the orbit is
     //mean anomaly is how far along the revolution the body is.  the mean anomaly is the fraction of an elliptical orbit's period that has elapsed since the orbiting body passed periapsis, expressed as an angle
@@ -150,11 +154,6 @@ public class Sim {
         for(Feature f: features){
             f.render();
         }
-    }
-
-    public void addFeature(Feature f){
-        the_group.getChildren().add(f.getForm());
-        features.add(f);
     }
 
     public void saveAs(){
@@ -251,9 +250,9 @@ public class Sim {
         
         if(toBeDeleted.parent != null){ //a feature's form is either stored in its parents group or in the feature
             toBeDeleted.parent.removeSatellite(toBeDeleted);
-            toBeDeleted.parent.form.getChildren().remove(toBeDeleted.form);
+            toBeDeleted.parent.primary.form.getChildren().remove(toBeDeleted.primary.form);
         }else{
-            the_group.getChildren().remove(toBeDeleted.getForm());
+            the_group.getChildren().remove(toBeDeleted.primary.form);
         }
 
         if(the_group.getChildren().contains(toBeDeleted.connectorIn.line)){
