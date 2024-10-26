@@ -18,7 +18,7 @@ import javafx.stage.Stage;
 
 public class Sim {
     private static Sim the_only_sim = null;
-    private Stage window;
+    public Stage window;
     private Group selection;
     private Group the_group = new Group(); //All shapes are stored in this.
 
@@ -78,6 +78,7 @@ public class Sim {
     public void createNewSystem(){
         system_parent = createFeature();
         system_parent.setPrimaryVisiblity(true);
+        system_parent.is_expanded = true;
 
 
         Feature sat = createFeature();

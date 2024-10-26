@@ -13,6 +13,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.effect.Light.Point;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -56,7 +57,7 @@ public class Feature{
     public ArrayList<Feature> children;
     public ArrayList<Ring> belts;
 
-
+    public Circle highlightRegion;
 
     Sim sim = Sim.getSim();
 
@@ -69,8 +70,10 @@ public class Feature{
 
         setLabelParams(name, 20);
 
+        planet_right_click(primary.shape);
+        planet_right_click(satellite.shape);
 
-        //primary.form.getChildren().add(connectorIn.line);
+        is_expanded = false;
 
         // try{
         //     FXMLLoader loader = new FXMLLoader(getClass().getResource("rightclickcontrol.fxml"));
@@ -159,6 +162,7 @@ public class Feature{
         showConnector = true;
         satellite.satelliteNameLabel.setVisible(false);
         primary.nameLabel.setVisible(true);
+        is_expanded = true;
     }
 
     public void setPrimaryVisiblity(boolean b){
@@ -198,13 +202,25 @@ public class Feature{
 
     public void planet_right_click(Node ellipse){
 
-        ellipse.setOnContextMenuRequested(e -> {
-            contextmenu.show(ellipse, e.getSceneX(), e.getSceneY());
+        // ellipse.setOnContextMenuRequested(e -> {
+        //     contextmenu.show(ellipse, e.getSceneX(), e.getSceneY());
+        //     e.consume();
+        // });
+        ellipse.setOnMouseClicked(e -> {
+            if(e.getButton()== MouseButton.SECONDARY){
+                try {
+                    createSkin();
+                } catch (Exception e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
             e.consume();
+            }
         });
     };
 
     public void setLabelParams(String name, double fontSize){
+        //sets the labels
         Text t = primary.nameLabel;
         t.setFont(new Font(fontSize));
         t.setText(name);
@@ -217,8 +233,8 @@ public class Feature{
 
         double width = t.getLayoutBounds().getWidth();
         t.setTranslateX(satellite.getMarkerPosition().getX() - width / 2);
-        System.out.println(satellite.getMarkerPosition());
-        System.out.println(satellite.orbit.planetPoint);
+        // System.out.println(satellite.getMarkerPosition());
+        // System.out.println(satellite.orbit.planetPoint);
         t.setTranslateY(-1 * radius - 10 + satellite.getMarkerPosition().getY());
     }
 
@@ -244,8 +260,40 @@ public class Feature{
     }
 
     public void setApoAndPeri(Double apogee, Double perigee){
+        //sets apogee and perigee
         satellite.orbit.apogee = apogee;
         satellite.orbit.perigee = perigee;
+    }
+
+    public void createSkin() throws Exception{
+        Skin s = new Skin(this);
+        highlight();
+        s.cropImage();
+
+    }
+
+    public void highlight(){
+        highlightRegion = new Circle(primary.shape.getRadius());
+        highlightRegion.setOpacity(0.5);
+        highlightRegion.setFill(Color.YELLOW);
+        highlightRegion.setViewOrder(-2.0);
+        highlightRegion.setMouseTransparent(true);
+
+        if(is_expanded){
+            primary.form.getChildren().add(highlightRegion);
+        }else{
+            satellite.form.getChildren().add(highlightRegion);
+            highlightRegion.setTranslateX(satellite.getMarkerPosition().getX());
+            highlightRegion.setTranslateY(satellite.getMarkerPosition().getY());
+        }
+    }
+
+    public void unHighlist(Circle highlistRegion){
+        if(is_expanded){
+            primary.form.getChildren().add(highlightRegion);
+        }else{
+            satellite.form.getChildren().add(highlightRegion);
+        }
     }
 
     // public void setParent(Feature parent){

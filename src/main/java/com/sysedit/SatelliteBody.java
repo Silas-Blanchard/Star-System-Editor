@@ -2,10 +2,12 @@ package com.sysedit;
 
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.text.Text;
+
 
 public class SatelliteBody {
     Group form;
@@ -14,6 +16,7 @@ public class SatelliteBody {
     Feature reference;
     Group orbitGroup;
     Text satelliteNameLabel;
+    ImageView skin; //skin is the feature image. Should be the same in Primary Body
 
     public SatelliteBody(Feature f){
         reference = f;
@@ -22,6 +25,8 @@ public class SatelliteBody {
 
         form = new Group();
         orbitGroup = new Group();
+
+        skin = new ImageView();
         
         satelliteNameLabel = new Text();
         satelliteNameLabel.setVisible(true);
@@ -50,12 +55,14 @@ public class SatelliteBody {
         if(orbitGroup.getChildren().contains(shape)){
             orbitGroup.getChildren().remove(shape);
         }
+        skin.setVisible(false);
     }
 
     public void showPlanet(){
         if(!orbitGroup.getChildren().contains(shape)){
             orbitGroup.getChildren().add(shape);
         }
+        skin.setVisible(true);
     }
 
     public Point2D getMarkerPosition(){

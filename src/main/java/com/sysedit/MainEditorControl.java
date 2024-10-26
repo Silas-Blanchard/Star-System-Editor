@@ -121,10 +121,10 @@ public class MainEditorControl {
 
         //newSystemParent.setOnAction(e-> sim.set_new_parent());
 
-        mainpane.setOnContextMenuRequested(e->{
-                contextmenu.show(imageView, e.getScreenX(), e.getScreenY());
-            }
-        );
+        // mainpane.setOnContextMenuRequested(e->{
+        //         contextmenu.show(imageView, e.getScreenX(), e.getScreenY());
+        //     }
+        // );
 
         StackPane stacky = new StackPane();
         stacky.getChildren().addAll(imageView, mainpane);

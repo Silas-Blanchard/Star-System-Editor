@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -19,6 +20,8 @@ public class PrimaryBody {
     public Point2D objectivePoint;
 
     public Text nameLabel;
+
+    public ImageView skin;
 
     public PrimaryBody(Feature f){
         satellites = new ArrayList<SatelliteBody>();
@@ -43,6 +46,8 @@ public class PrimaryBody {
         line1.setViewOrder(0.1);
         line2.setViewOrder(0.1);
 
+        skin = new ImageView();
+
         hidePrimary();
     }
 
@@ -55,6 +60,7 @@ public class PrimaryBody {
             form.getChildren().add(shape);
             crosshair.setVisible(true);
         }
+        skin.setVisible(true);
     }
 
     public void hidePrimary(){ //hiding the primary actually removes it so no one can click it (maybe invisible things can be clicked idk)
@@ -62,6 +68,7 @@ public class PrimaryBody {
             form.getChildren().remove(shape);
             crosshair.setVisible(false);
         }
+        skin.setVisible(false);
     }
 
     public void setColorBlack(){
