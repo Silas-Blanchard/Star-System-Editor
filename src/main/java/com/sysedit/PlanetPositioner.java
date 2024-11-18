@@ -72,7 +72,7 @@ public class PlanetPositioner {
             if(referenceHolder.showConnector){
                 Connector c = referenceHolder.connectorIn;
                 Point2D p1 = referenceHolder.parent.getTranslation();
-                Point2D p2 = referenceHolder.satellite.getMarkerPosition();
+                Point2D p2 = referenceHolder.secondary.getMarkerPosition();
                 c.setStart(new Point2D(p1.getX() + p2.getX(), p1.getY() + p2.getY()));
                 c.setEnd(new Point2D(prevX + deltaX, prevY + deltaY));
                 c.render();
@@ -82,7 +82,7 @@ public class PlanetPositioner {
                 if(f.showConnector){
                     Connector c = f.connectorIn;
                     Point2D p1 = f.parent.getTranslation();
-                    Point2D p2 = f.satellite.getMarkerPosition();
+                    Point2D p2 = f.secondary.getMarkerPosition();
                     c.setStart(new Point2D(p1.getX() + p2.getX(), p1.getY() + p2.getY()));
                     c.setEnd(new Point2D(f.getTranslation().getX(), f.getTranslation().getY()));
                     c.render();

@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import javafx.embed.swing.*;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
@@ -41,8 +42,10 @@ public class Saver {
 
         if (file != null) {
             try {
-                RenderedImage renderedImage = convertWritableImageToRenderedImage(writableImage);
-                ImageIO.write(renderedImage, "png", file);
+                // RenderedImage renderedImage = convertWritableImageToRenderedImage(writableImage);
+                // ImageIO.write(renderedImage, "png", file);
+                BufferedImage img = SwingFXUtils.fromFXImage(contentNode.snapshot(params, null), null);
+                ImageIO.write(img, "png", file);
             } catch (IOException ex) {
                 System.err.println("Error saving image: " + ex.getMessage());
             }

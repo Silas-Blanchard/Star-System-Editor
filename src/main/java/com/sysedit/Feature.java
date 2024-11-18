@@ -11,6 +11,8 @@ import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.effect.Light.Point;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -51,19 +53,21 @@ public class Feature{
     public Connector connectorIn;
     public Group altform = new Group();
 
-    public PrimaryBody primary;
-    public SatelliteBody satellite;
+    public PrimaryBody primary; //the form that is draggable and clickable
+    public SatelliteBody secondary; //the form that is not dragable nor clickable
 
     public ArrayList<Feature> children;
     public ArrayList<Ring> belts;
 
     public Circle highlightRegion;
 
+    public ImageView skin;
+
     Sim sim = Sim.getSim();
 
     public Feature(){
         primary = new PrimaryBody(this);
-        satellite = new SatelliteBody(this);
+        secondary = new SatelliteBody(this);
         children = new ArrayList<Feature>();
         belts = new ArrayList<Ring>();
         connectorIn = new Connector(this);
@@ -71,7 +75,7 @@ public class Feature{
         setLabelParams(name, 20);
 
         planet_right_click(primary.shape);
-        planet_right_click(satellite.shape);
+        planet_right_click(secondary.shape);
 
         is_expanded = false;
 
@@ -123,12 +127,12 @@ public class Feature{
     }
 
     public Group getSatelliteForm(){
-        return satellite.getForm();
+        return secondary.getForm();
     }
 
     public void render(){
         if(showSatelliteForm){
-            satellite.render();
+            secondary.render();
         }
 
         if(showPrimaryForm){
@@ -153,14 +157,14 @@ public class Feature{
     public void setParent(Feature f){
         parent = f;
         primary.nameLabel.setVisible(false);
-        satellite.satelliteNameLabel.setVisible(true);
+        secondary.satelliteNameLabel.setVisible(true);
     }
 
     public void liberate(){//gotta be called or it doesn't know it's liberated
         setPrimaryVisiblity(true);
         setSatelliteVisiblity(false);
         showConnector = true;
-        satellite.satelliteNameLabel.setVisible(false);
+        secondary.satelliteNameLabel.setVisible(false);
         primary.nameLabel.setVisible(true);
         is_expanded = true;
     }
@@ -175,7 +179,7 @@ public class Feature{
 
         if(parent != null){ //these methods get the parent's position and then slaps it with its orbit's position
             primary.deltaPosition(parent.getTranslation());
-            primary.deltaPosition(satellite.getMarkerPosition());
+            primary.deltaPosition(secondary.getMarkerPosition());
         }
     }
 
@@ -189,14 +193,14 @@ public class Feature{
     public void setSatelliteVisiblity(boolean b){
         showSatelliteForm = b;
         if(b){
-            satellite.showPlanet();
+            secondary.showPlanet();
         }else{
-            satellite.hidePlanet();
+            secondary.hidePlanet();
         }
     }
 
     public Orbit getSatelliteFormOrbit(){
-        return satellite.orbit;
+        return secondary.orbit;
     }
 
 
@@ -226,16 +230,16 @@ public class Feature{
         t.setText(name);
         t.setFill(Color.WHITE);
 
-        t = satellite.satelliteNameLabel;
+        t = secondary.satelliteNameLabel;
         t.setFont(new Font(fontSize));
         t.setText(name);
         t.setFill(Color.WHITE);
 
         double width = t.getLayoutBounds().getWidth();
-        t.setTranslateX(satellite.getMarkerPosition().getX() - width / 2);
+        t.setTranslateX(secondary.getMarkerPosition().getX() - width / 2);
         // System.out.println(satellite.getMarkerPosition());
         // System.out.println(satellite.orbit.planetPoint);
-        t.setTranslateY(-1 * radius - 10 + satellite.getMarkerPosition().getY());
+        t.setTranslateY(-1 * radius - 10 + secondary.getMarkerPosition().getY());
     }
 
     public void setTextVisibility(Boolean b){
@@ -247,12 +251,12 @@ public class Feature{
         if(b){
             showPrimaryForm = false;
             showSatelliteForm = true;
-            satellite.hidePlanet();
+            secondary.hidePlanet();
             primary.setColorBlack();
             primary.nameLabel.setVisible(false);
-            satellite.satelliteNameLabel.setVisible(false);
+            secondary.satelliteNameLabel.setVisible(false);
         }else{
-            satellite.showPlanet();
+            secondary.showPlanet();
             primary.hidePrimary();
             show_name = true;
         }
@@ -261,8 +265,8 @@ public class Feature{
 
     public void setApoAndPeri(Double apogee, Double perigee){
         //sets apogee and perigee
-        satellite.orbit.apogee = apogee;
-        satellite.orbit.perigee = perigee;
+        secondary.orbit.apogee = apogee;
+        secondary.orbit.perigee = perigee;
     }
 
     public void createSkin() throws Exception{
@@ -282,18 +286,27 @@ public class Feature{
         if(is_expanded){
             primary.form.getChildren().add(highlightRegion);
         }else{
-            satellite.form.getChildren().add(highlightRegion);
-            highlightRegion.setTranslateX(satellite.getMarkerPosition().getX());
-            highlightRegion.setTranslateY(satellite.getMarkerPosition().getY());
+            secondary.form.getChildren().add(highlightRegion);
+            highlightRegion.setTranslateX(secondary.getMarkerPosition().getX());
+            highlightRegion.setTranslateY(secondary.getMarkerPosition().getY());
         }
     }
 
-    public void unHighlist(Circle highlistRegion){
+    public void unHighlist(){
         if(is_expanded){
-            primary.form.getChildren().add(highlightRegion);
+            primary.form.getChildren().remove(highlightRegion);
         }else{
-            satellite.form.getChildren().add(highlightRegion);
+            secondary.form.getChildren().remove(highlightRegion);
         }
+    }
+
+    public void setSkin(ImageView skin){
+        this.skin = skin;
+        primary.skin = skin;
+        primary.form.getChildren().add(primary.skin);
+
+        secondary.skin = skin;
+        secondary.form.getChildren().add(secondary.skin);
     }
 
     // public void setParent(Feature parent){

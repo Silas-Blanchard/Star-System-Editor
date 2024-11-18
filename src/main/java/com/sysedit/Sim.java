@@ -278,11 +278,11 @@ public class Sim {
         bary.setBarycenter(true);
         Feature sat1 = createFeature();
         Feature sat2 = createFeature();
-        sat1.satellite.orbit.apogee = 50.0;
-        sat1.satellite.orbit.perigee = 25.0;
-        sat2.satellite.orbit.apogee = 25.0;
-        sat2.satellite.orbit.perigee = 50.0;
-        sat2.satellite.orbit.angle = 180.0;
+        sat1.secondary.orbit.apogee = 50.0;
+        sat1.secondary.orbit.perigee = 25.0;
+        sat2.secondary.orbit.apogee = 25.0;
+        sat2.secondary.orbit.perigee = 50.0;
+        sat2.secondary.orbit.angle = 180.0;
         assignSatellite(bary, sat1);
         assignSatellite(bary, sat2);
         return bary;
